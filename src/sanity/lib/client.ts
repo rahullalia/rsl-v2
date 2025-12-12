@@ -1,12 +1,13 @@
 import { createClient } from 'next-sanity'
 
-export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '36wenybq'
-export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
+// Hardcoded values to avoid Vercel env var issues
+export const projectId = '36wenybq'
+export const dataset = 'production'
 export const apiVersion = '2024-01-01'
 
 export const client = createClient({
     projectId,
     dataset,
     apiVersion,
-    useCdn: false, // Set false to ensure we get fresh content
+    useCdn: false,
 })
