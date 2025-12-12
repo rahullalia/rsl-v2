@@ -1,52 +1,88 @@
+"use client";
+
 import Navigation from "@/components/Navigation";
 import Link from "next/link";
 import { ArrowRight, Cpu, Globe, Rocket, Terminal } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 export default function Home() {
+  const cursorGlowRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const glow = cursorGlowRef.current;
+    if (!glow) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      glow.style.left = e.clientX + "px";
+      glow.style.top = e.clientY + "px";
+    };
+
+    const handleMouseLeave = () => {
+      glow.style.opacity = "0";
+    };
+
+    const handleMouseEnter = () => {
+      glow.style.opacity = "1";
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseleave", handleMouseLeave);
+    document.addEventListener("mouseenter", handleMouseEnter);
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("mouseenter", handleMouseEnter);
+    };
+  }, []);
+
   return (
     <main className="min-h-screen bg-brand-black text-white selection:bg-brand-blue selection:text-white">
+      <div className="gradient-overlay" />
+      <div ref={cursorGlowRef} className="cursor-glow" />
+
       <Navigation />
 
       {/* HERO SECTION */}
-      <section className="min-h-screen flex flex-col justify-center px-6 pt-32 pb-20 relative overflow-hidden">
-        {/* Abstract Background Glow */}
-        <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-brand-blue/20 rounded-full blur-[120px] opacity-50 pointer-events-none" />
-
-        <div className="container mx-auto">
-          <div className="max-w-4xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-xs text-brand-blue font-medium mb-8">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-              </span>
-              Accepting New Systems Clients for Q1 2026
-            </div>
-
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold leading-[0.95] tracking-tight mb-8">
-              We Architect <br />
-              <span className="text-gradient">Intelligent Systems.</span>
-            </h1>
-
-            <p className="text-xl md:text-2xl text-gray-400 max-w-2xl leading-relaxed mb-12">
-              Stop random acts of marketing. We build the infrastructure that scales your revenue, automates your fulfillment, and organizes your chaos.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center px-8 py-4 bg-white text-black text-lg font-bold rounded-full hover:bg-brand-blue hover:text-white transition-all group"
-              >
-                Build My System
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                href="/work"
-                className="inline-flex items-center justify-center px-8 py-4 bg-transparent border border-white/20 text-white text-lg font-medium rounded-full hover:bg-white/10 transition-all"
-              >
-                View Case Studies
-              </Link>
-            </div>
+      <section className="min-h-screen flex flex-col justify-center px-6 md:px-12 pt-32 pb-20 relative overflow-hidden z-10">
+        <div className="max-w-[1200px]">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-xs text-brand-blue font-medium mb-8">
+            <span className="relative flex h-2 w-2">
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse-slow"></span>
+            </span>
+            Accepting New Systems Clients for Q1 2026
           </div>
+
+          <h1 className="hero-heading font-display font-bold mb-10">
+            We build<br />
+            <span className="text-gradient">intelligent</span><br />
+            marketing systems
+          </h1>
+
+          <p className="text-lg md:text-xl text-white/50 max-w-[600px] leading-relaxed font-light mb-12">
+            Smart marketing meets AI automation. We build the infrastructure that scales your revenue, automates your fulfillment, and organizes your chaos.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center px-8 py-4 bg-white text-black text-lg font-bold rounded-full hover:bg-brand-blue hover:text-white transition-all group"
+            >
+              Build My System
+              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link
+              href="/work"
+              className="inline-flex items-center justify-center px-8 py-4 bg-transparent border border-white/20 text-white text-lg font-medium rounded-full hover:bg-white/10 transition-all"
+            >
+              View Case Studies
+            </Link>
+          </div>
+        </div>
+
+        {/* Animated line */}
+        <div className="line-container">
+          <div className="line-progress"></div>
         </div>
       </section>
 
