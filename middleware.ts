@@ -149,9 +149,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url), 301);
   }
 
-  // 12. Old contact page variations
-  if (pathname === '/contact' || pathname === '/contact/' || pathname === '/contact-2' || pathname === '/contact-2/') {
-    return NextResponse.redirect(new URL('/inquiry-form', request.url), 301);
+  // 12. Old contact page variations (contact-2 only, /contact is a valid page)
+  if (pathname === '/contact-2' || pathname === '/contact-2/') {
+    return NextResponse.redirect(new URL('/contact', request.url), 301);
   }
 
   // 13. Old about page
@@ -231,7 +231,6 @@ export const config = {
     '/coming-soon/:path*',
     '/wp-sitemap:path*',
     '/blogs/:path*',
-    '/contact/:path*',
     '/contact-2/:path*',
     '/about-us/:path*',
     '/privacy-policy-2/:path*',
