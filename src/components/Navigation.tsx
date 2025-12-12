@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 
 const navLinks = [
-    { name: "Services", href: "/services" },
+    { name: "Home", href: "/" },
     { name: "Work", href: "/work" },
     { name: "Blog", href: "/blog" },
 ];
@@ -53,16 +53,16 @@ export default function Navigation() {
                     ))}
                 </div>
 
-                {/* Right side: Login + Start a Project */}
-                <div className="hidden md:flex items-center gap-4">
+                {/* Right side: Login + Start a Project - pill style like old site */}
+                <div className="hidden md:flex items-center bg-[#111] rounded-full p-1.5 border border-white/10">
                     <button
-                        className="px-5 py-2.5 text-sm font-medium text-gray-400 hover:text-white transition-colors"
+                        className="px-5 py-2.5 text-sm font-medium text-gray-400 hover:text-white transition-colors rounded-full"
                     >
                         Login
                     </button>
                     <Link
                         href="/#contact"
-                        className="px-5 py-2.5 bg-white text-black text-sm font-semibold rounded-full hover:bg-brand-blue hover:text-white transition-all"
+                        className="px-5 py-2.5 bg-transparent border border-white/20 text-white text-sm font-medium rounded-full hover:bg-white/10 transition-all"
                     >
                         Start a Project
                     </Link>

@@ -1,6 +1,7 @@
 "use client";
 
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import FadeIn from "@/components/FadeIn";
 import FadeInStagger from "@/components/FadeInStagger";
 import Link from "next/link";
@@ -329,65 +330,5 @@ export default function Home() {
       {/* FOOTER */}
       <Footer />
     </main>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="py-20 border-t border-white/10">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
-          <FadeIn>
-            <div>
-              <span className="text-3xl font-display font-bold block mb-6">RSL/A</span>
-              <p className="text-gray-500 max-w-sm mb-8">
-                Architecting the future of marketing with intelligence and precision.
-              </p>
-              <div>
-                <h5 className="text-gray-500 text-sm uppercase tracking-wider mb-4">Write to us</h5>
-                <a
-                  href="mailto:hello@rsla.io"
-                  className="text-white border-b border-gray-600 hover:text-brand-blue hover:border-brand-blue transition-all"
-                >
-                  hello@rsla.io
-                </a>
-              </div>
-            </div>
-          </FadeIn>
-
-          <FadeIn delay={0.1}>
-            <div className="flex flex-col md:flex-row gap-16 md:justify-end">
-              <div className="flex flex-col gap-4">
-                <h5 className="font-bold text-white">Company</h5>
-                <Link href="/work" className="text-gray-400 hover:text-brand-blue transition-colors">Work</Link>
-                <Link href="/about" className="text-gray-400 hover:text-brand-blue transition-colors">About</Link>
-                <Link href="/blog" className="text-gray-400 hover:text-brand-blue transition-colors">Blog</Link>
-                <Link href="/#contact" className="text-gray-400 hover:text-brand-blue transition-colors">Contact</Link>
-              </div>
-              <div className="flex flex-col gap-4">
-                <h5 className="font-bold text-white">Connect</h5>
-                <a href="https://www.linkedin.com/in/rahullalia/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-brand-blue transition-colors">LinkedIn</a>
-                <a href="https://www.instagram.com/rahul.lalia/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-brand-blue transition-colors">Instagram</a>
-                <a href="https://www.tiktok.com/@rahul_lalia" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-brand-blue transition-colors">TikTok</a>
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-white/5">
-          <div className="text-gray-600 text-sm">
-            &copy; {new Date().getFullYear()} RSL/A. All rights reserved.
-          </div>
-          <div className="flex gap-6 text-sm">
-            <Link href="/privacy-policy" className="text-gray-500 hover:text-brand-blue transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="/terms" className="text-gray-500 hover:text-brand-blue transition-colors">
-              Terms
-            </Link>
-          </div>
-        </div>
-      </div>
-    </footer>
   );
 }
