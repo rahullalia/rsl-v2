@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 48" fill="none">
+  <!-- Background -->
+  <rect x="0" y="0" width="300" height="48" fill="#0a0a0a"/>
+
+  <defs>
+    <style>
+      @import url('https://api.fontshare.com/v2/css?f[]=satoshi@900&amp;display=swap');
+      .wordmark {
+        font-family: 'Satoshi', system-ui, -apple-system, sans-serif;
+        font-weight: 900;
+        font-size: 40px;
+        letter-spacing: -0.04em;
+      }
+    </style>
+  </defs>
+
+  <!-- ============================================
+       LOGOMARK: Blue Square with White Slash
+       48x48px square, 0px border radius
+       ============================================ -->
+  <rect x="0" y="0" width="48" height="48" rx="0" fill="#0070f3"/>
+
+  <!-- White slash inside square (parallelogram)
+       Slope: ~22° to match letter A's left leg
+       Width: 8px stroke equivalent
+       Top/bottom edges are perfectly horizontal -->
+  <polygon points="30,4 38,4 18,44 10,44" fill="#ffffff"/>
+
+  <!-- ============================================
+       GAP: 24px (50% of 48px square)
+       Square ends at x=48, text starts at x=72
+       ============================================ -->
+
+  <!-- ============================================
+       WORDMARK: RSL/A
+       ============================================ -->
+
+  <!-- RSL text -->
+  <text x="72" y="37" class="wordmark" fill="#ffffff">RSL</text>
+
+  <!-- Blue Slash (parallelogram, NOT text character)
+       - Top edge at cap height (y=6)
+       - Bottom edge at baseline (y=42)
+       - Slope parallel to letter A's left leg (~22°)
+       - Width: 8px -->
+  <polygon points="172,6 180,6 166,42 158,42" fill="#0070f3"/>
+
+  <!-- A text -->
+  <text x="182" y="37" class="wordmark" fill="#ffffff">A</text>
+</svg>

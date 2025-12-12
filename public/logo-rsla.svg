@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50" fill="none">
+  <!-- RSL text -->
+  <text x="0" y="40" font-family="Satoshi, sans-serif" font-weight="900" font-size="42" fill="white" letter-spacing="-0.04em">RSL</text>
+
+  <!-- Slash aligned with A's angle (~68 degrees from horizontal, or ~22 degrees rotation) -->
+  <text x="85" y="40" font-family="Satoshi, sans-serif" font-weight="900" font-size="42" fill="white" letter-spacing="-0.04em" transform="rotate(-5, 95, 25)">/</text>
+
+  <!-- A text -->
+  <text x="105" y="40" font-family="Satoshi, sans-serif" font-weight="900" font-size="42" fill="white" letter-spacing="-0.04em">A</text>
+</svg>

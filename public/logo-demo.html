@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSL/A Logo Builder - Interactive</title>
+
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --color-bg: #0a0a0a;
+            --color-text: #ffffff;
+            --color-accent: #0070f3;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: 'Satoshi', sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        h1 { margin-bottom: 10px; }
+        h2 {
+            color: var(--color-accent);
+            margin-top: 40px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 900px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ============================================
+           LOGO PREVIEW AREA
+           ============================================ */
+        .preview-area {
+            background: #111;
+            border-radius: 16px;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            position: sticky;
+            top: 20px;
+        }
+
+        .logo-preview {
+            display: inline-flex;
+            align-items: baseline;
+            font-weight: 900;
+            line-height: 1;
+            font-size: 100px;
+        }
+
+        .logo-preview .letter {
+            display: inline-block;
+            transition: all 0.15s ease;
+        }
+
+        .size-examples {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+            align-items: baseline;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .size-examples .logo-small {
+            display: inline-flex;
+            align-items: baseline;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .size-examples .logo-small .letter {
+            display: inline-block;
+        }
+
+        /* ============================================
+           CONTROLS PANEL
+           ============================================ */
+        .controls-panel {
+            background: #0d0d0d;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 24px;
+            height: fit-content;
+        }
+
+        .control-group {
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #222;
+        }
+
+        .control-group:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .control-group h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #666;
+            margin: 0 0 16px 0;
+        }
+
+        .control-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .control-row label {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .control-row .value {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 12px;
+            color: var(--color-accent);
+            background: #1a1a1a;
+            padding: 4px 8px;
+            border-radius: 4px;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: #222;
+            border-radius: 3px;
+            outline: none;
+            margin: 8px 0;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--color-accent);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        input[type="color"] {
+            width: 40px;
+            height: 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .color-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .color-row label {
+            font-size: 13px;
+            color: #999;
+            flex: 1;
+        }
+
+        .color-row .color-hex {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 11px;
+            color: #666;
+            background: #1a1a1a;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        /* Preset buttons */
+        .presets {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .preset-btn {
+            padding: 8px 14px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid #333;
+            background: #1a1a1a;
+            color: #999;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover {
+            border-color: var(--color-accent);
+            color: white;
+        }
+
+        .preset-btn.active {
+            background: var(--color-accent);
+            border-color: var(--color-accent);
+            color: white;
+        }
+
+        /* Export section */
+        .export-section {
+            margin-top: 30px;
+        }
+
+        .export-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            background: var(--color-accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 10px;
+        }
+
+        .export-btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+
+        .export-btn.secondary {
+            background: #222;
+            color: #999;
+        }
+
+        .export-btn.secondary:hover {
+            background: #333;
+            color: white;
+        }
+
+        /* Code output */
+        .code-output {
+            background: #0a0a0a;
+            border: 1px solid #222;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 11px;
+            color: #4ade80;
+            overflow-x: auto;
+            white-space: pre;
+            margin-top: 16px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .note {
+            color: #555;
+            font-size: 12px;
+            line-height: 1.5;
+            margin-top: 12px;
+        }
+
+        /* Reset button */
+        .reset-btn {
+            background: none;
+            border: 1px solid #333;
+            color: #666;
+            padding: 6px 12px;
+            font-size: 11px;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+
+        .reset-btn:hover {
+            border-color: #f44;
+            color: #f44;
+        }
+
+        /* Background toggle */
+        .bg-toggle {
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .bg-toggle button {
+            flex: 1;
+            padding: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            border: 1px solid #333;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .bg-toggle .dark {
+            background: #0a0a0a;
+            color: white;
+        }
+
+        .bg-toggle .light {
+            background: #ffffff;
+            color: #0a0a0a;
+        }
+
+        .bg-toggle button.active {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>RSL/A Logo Builder</h1>
+    <p style="color: #666; margin-bottom: 30px;">Interactive logo customizer with real-time preview</p>
+
+    <div class="layout">
+        <!-- Preview Area -->
+        <div class="preview-area" id="preview-area">
+            <div class="logo-preview" id="logo-preview">
+                <span class="letter" id="letter-R">R</span>
+                <span class="letter" id="letter-S">S</span>
+                <span class="letter" id="letter-L">L</span>
+                <span class="letter" id="letter-slash">/</span>
+                <span class="letter" id="letter-A">A</span>
+            </div>
+
+            <div class="size-examples" id="size-examples">
+                <div class="logo-small" style="font-size: 48px;">
+                    <span class="letter letter-r">R</span>
+                    <span class="letter letter-s">S</span>
+                    <span class="letter letter-l">L</span>
+                    <span class="letter letter-slash">/</span>
+                    <span class="letter letter-a">A</span>
+                </div>
+                <div class="logo-small" style="font-size: 32px;">
+                    <span class="letter letter-r">R</span>
+                    <span class="letter letter-s">S</span>
+                    <span class="letter letter-l">L</span>
+                    <span class="letter letter-slash">/</span>
+                    <span class="letter letter-a">A</span>
+                </div>
+                <div class="logo-small" style="font-size: 20px;">
+                    <span class="letter letter-r">R</span>
+                    <span class="letter letter-s">S</span>
+                    <span class="letter letter-l">L</span>
+                    <span class="letter letter-slash">/</span>
+                    <span class="letter letter-a">A</span>
+                </div>
+            </div>
+
+            <div class="bg-toggle">
+                <button class="dark active" onclick="setBg('dark')">Dark</button>
+                <button class="light" onclick="setBg('light')">Light</button>
+            </div>
+        </div>
+
+        <!-- Controls Panel -->
+        <div class="controls-panel">
+            <button class="reset-btn" onclick="resetAll()">Reset</button>
+
+            <!-- Slash Controls -->
+            <div class="control-group">
+                <h3>Slash ( / )</h3>
+
+                <div class="control-row">
+                    <label>Skew Angle</label>
+                    <span class="value" id="val-skew">-12°</span>
+                </div>
+                <input type="range" id="ctrl-skew" min="-30" max="10" value="-12" step="1">
+
+                <div class="control-row">
+                    <label>Horizontal Offset</label>
+                    <span class="value" id="val-slash-x">0px</span>
+                </div>
+                <input type="range" id="ctrl-slash-x" min="-20" max="20" value="0" step="1">
+
+                <div class="control-row">
+                    <label>Vertical Offset</label>
+                    <span class="value" id="val-slash-y">0px</span>
+                </div>
+                <input type="range" id="ctrl-slash-y" min="-20" max="20" value="0" step="1">
+            </div>
+
+            <!-- Spacing Controls -->
+            <div class="control-group">
+                <h3>Letter Spacing</h3>
+
+                <div class="control-row">
+                    <label>R → S</label>
+                    <span class="value" id="val-gap-rs">0px</span>
+                </div>
+                <input type="range" id="ctrl-gap-rs" min="-10" max="20" value="0" step="1">
+
+                <div class="control-row">
+                    <label>S → L</label>
+                    <span class="value" id="val-gap-sl">0px</span>
+                </div>
+                <input type="range" id="ctrl-gap-sl" min="-10" max="20" value="0" step="1">
+
+                <div class="control-row">
+                    <label>L → /</label>
+                    <span class="value" id="val-gap-lslash">0px</span>
+                </div>
+                <input type="range" id="ctrl-gap-lslash" min="-10" max="20" value="0" step="1">
+
+                <div class="control-row">
+                    <label>/ → A</label>
+                    <span class="value" id="val-gap-slasha">0px</span>
+                </div>
+                <input type="range" id="ctrl-gap-slasha" min="-10" max="20" value="0" step="1">
+
+                <div class="control-row">
+                    <label>Global Tracking</label>
+                    <span class="value" id="val-tracking">-0.04em</span>
+                </div>
+                <input type="range" id="ctrl-tracking" min="-0.1" max="0.1" value="-0.04" step="0.01">
+            </div>
+
+            <!-- Color Controls -->
+            <div class="control-group">
+                <h3>Colors</h3>
+
+                <div class="color-row">
+                    <label>R S L</label>
+                    <input type="color" id="color-rsl" value="#ffffff">
+                    <span class="color-hex" id="hex-rsl">#ffffff</span>
+                </div>
+
+                <div class="color-row">
+                    <label>Slash /</label>
+                    <input type="color" id="color-slash" value="#ffffff">
+                    <span class="color-hex" id="hex-slash">#ffffff</span>
+                </div>
+
+                <div class="color-row">
+                    <label>A</label>
+                    <input type="color" id="color-a" value="#ffffff">
+                    <span class="color-hex" id="hex-a">#ffffff</span>
+                </div>
+            </div>
+
+            <!-- Presets -->
+            <div class="control-group">
+                <h3>Color Presets</h3>
+                <div class="presets">
+                    <button class="preset-btn active" onclick="applyPreset('white')">All White</button>
+                    <button class="preset-btn" onclick="applyPreset('blue-slash')">Blue Slash</button>
+                    <button class="preset-btn" onclick="applyPreset('blue-a')">Blue A</button>
+                    <button class="preset-btn" onclick="applyPreset('gradient')">Split</button>
+                </div>
+            </div>
+
+            <!-- Export -->
+            <div class="control-group export-section">
+                <h3>Export</h3>
+                <button class="export-btn" onclick="copyCSS()">Copy CSS Code</button>
+                <button class="export-btn secondary" onclick="downloadSVG()">Download SVG</button>
+
+                <div class="code-output" id="code-output">.logo {
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.logo .slash {
+  display: inline-block;
+  transform: skewX(-12deg);
+}</div>
+
+                <p class="note">For Canva/Figma: Download the SVG and import it directly.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        const state = {
+            skew: -12,
+            slashX: 0,
+            slashY: 0,
+            gapRS: 0,
+            gapSL: 0,
+            gapLSlash: 0,
+            gapSlashA: 0,
+            tracking: -0.04,
+            colorRSL: '#ffffff',
+            colorSlash: '#ffffff',
+            colorA: '#ffffff',
+            bgDark: true
+        };
+
+        // Elements
+        const elements = {
+            R: document.getElementById('letter-R'),
+            S: document.getElementById('letter-S'),
+            L: document.getElementById('letter-L'),
+            slash: document.getElementById('letter-slash'),
+            A: document.getElementById('letter-A'),
+            preview: document.getElementById('logo-preview'),
+            previewArea: document.getElementById('preview-area')
+        };
+
+        // Update functions
+        function updateLogo() {
+            // Main preview
+            elements.slash.style.transform = `skewX(${state.skew}deg) translate(${state.slashX}px, ${state.slashY}px)`;
+            elements.S.style.marginLeft = `${state.gapRS}px`;
+            elements.L.style.marginLeft = `${state.gapSL}px`;
+            elements.slash.style.marginLeft = `${state.gapLSlash}px`;
+            elements.A.style.marginLeft = `${state.gapSlashA}px`;
+            elements.preview.style.letterSpacing = `${state.tracking}em`;
+
+            elements.R.style.color = state.colorRSL;
+            elements.S.style.color = state.colorRSL;
+            elements.L.style.color = state.colorRSL;
+            elements.slash.style.color = state.colorSlash;
+            elements.A.style.color = state.colorA;
+
+            // Small previews
+            document.querySelectorAll('.letter-r').forEach(el => el.style.color = state.colorRSL);
+            document.querySelectorAll('.letter-s').forEach(el => { el.style.color = state.colorRSL; el.style.marginLeft = `${state.gapRS * 0.5}px`; });
+            document.querySelectorAll('.letter-l').forEach(el => { el.style.color = state.colorRSL; el.style.marginLeft = `${state.gapSL * 0.5}px`; });
+            document.querySelectorAll('.letter-slash').forEach(el => {
+                el.style.color = state.colorSlash;
+                el.style.transform = `skewX(${state.skew}deg)`;
+                el.style.marginLeft = `${state.gapLSlash * 0.5}px`;
+            });
+            document.querySelectorAll('.letter-a').forEach(el => { el.style.color = state.colorA; el.style.marginLeft = `${state.gapSlashA * 0.5}px`; });
+            document.querySelectorAll('.logo-small').forEach(el => el.style.letterSpacing = `${state.tracking}em`);
+
+            updateCodeOutput();
+        }
+
+        function updateCodeOutput() {
+            const css = `.logo {
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 900;
+  letter-spacing: ${state.tracking}em;
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.logo .letter-rsl { color: ${state.colorRSL}; }
+.logo .letter-slash {
+  color: ${state.colorSlash};
+  display: inline-block;
+  transform: skewX(${state.skew}deg)${state.slashX !== 0 || state.slashY !== 0 ? ` translate(${state.slashX}px, ${state.slashY}px)` : ''};
+  margin-left: ${state.gapLSlash}px;
+}
+.logo .letter-a {
+  color: ${state.colorA};
+  margin-left: ${state.gapSlashA}px;
+}`;
+            document.getElementById('code-output').textContent = css;
+        }
+
+        // Bind controls
+        function bindControl(id, stateKey, suffix = '', multiplier = 1) {
+            const ctrl = document.getElementById(`ctrl-${id}`);
+            const val = document.getElementById(`val-${id}`);
+
+            ctrl.addEventListener('input', (e) => {
+                state[stateKey] = parseFloat(e.target.value) * multiplier;
+                val.textContent = e.target.value + suffix;
+                updateLogo();
+            });
+        }
+
+        bindControl('skew', 'skew', '°');
+        bindControl('slash-x', 'slashX', 'px');
+        bindControl('slash-y', 'slashY', 'px');
+        bindControl('gap-rs', 'gapRS', 'px');
+        bindControl('gap-sl', 'gapSL', 'px');
+        bindControl('gap-lslash', 'gapLSlash', 'px');
+        bindControl('gap-slasha', 'gapSlashA', 'px');
+
+        // Tracking special case
+        document.getElementById('ctrl-tracking').addEventListener('input', (e) => {
+            state.tracking = parseFloat(e.target.value);
+            document.getElementById('val-tracking').textContent = state.tracking.toFixed(2) + 'em';
+            updateLogo();
+        });
+
+        // Color controls
+        ['rsl', 'slash', 'a'].forEach(key => {
+            const colorInput = document.getElementById(`color-${key}`);
+            const hexDisplay = document.getElementById(`hex-${key}`);
+
+            colorInput.addEventListener('input', (e) => {
+                const stateKey = key === 'rsl' ? 'colorRSL' : key === 'slash' ? 'colorSlash' : 'colorA';
+                state[stateKey] = e.target.value;
+                hexDisplay.textContent = e.target.value;
+                updateLogo();
+                clearPresetButtons();
+            });
+        });
+
+        // Presets
+        function applyPreset(preset) {
+            clearPresetButtons();
+            event.target.classList.add('active');
+
+            switch(preset) {
+                case 'white':
+                    state.colorRSL = '#ffffff';
+                    state.colorSlash = '#ffffff';
+                    state.colorA = '#ffffff';
+                    break;
+                case 'blue-slash':
+                    state.colorRSL = '#ffffff';
+                    state.colorSlash = '#0070f3';
+                    state.colorA = '#ffffff';
+                    break;
+                case 'blue-a':
+                    state.colorRSL = '#ffffff';
+                    state.colorSlash = '#ffffff';
+                    state.colorA = '#0070f3';
+                    break;
+                case 'gradient':
+                    state.colorRSL = '#ffffff';
+                    state.colorSlash = '#0070f3';
+                    state.colorA = '#0070f3';
+                    break;
+            }
+
+            // Update color inputs
+            document.getElementById('color-rsl').value = state.colorRSL;
+            document.getElementById('color-slash').value = state.colorSlash;
+            document.getElementById('color-a').value = state.colorA;
+            document.getElementById('hex-rsl').textContent = state.colorRSL;
+            document.getElementById('hex-slash').textContent = state.colorSlash;
+            document.getElementById('hex-a').textContent = state.colorA;
+
+            updateLogo();
+        }
+
+        function clearPresetButtons() {
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+        }
+
+        // Background toggle
+        function setBg(mode) {
+            document.querySelectorAll('.bg-toggle button').forEach(btn => btn.classList.remove('active'));
+            if (mode === 'dark') {
+                elements.previewArea.style.background = '#111';
+                document.querySelector('.bg-toggle .dark').classList.add('active');
+                state.bgDark = true;
+            } else {
+                elements.previewArea.style.background = '#ffffff';
+                document.querySelector('.bg-toggle .light').classList.add('active');
+                state.bgDark = false;
+            }
+        }
+
+        // Reset
+        function resetAll() {
+            state.skew = -12;
+            state.slashX = 0;
+            state.slashY = 0;
+            state.gapRS = 0;
+            state.gapSL = 0;
+            state.gapLSlash = 0;
+            state.gapSlashA = 0;
+            state.tracking = -0.04;
+            state.colorRSL = '#ffffff';
+            state.colorSlash = '#ffffff';
+            state.colorA = '#ffffff';
+
+            // Reset all inputs
+            document.getElementById('ctrl-skew').value = -12;
+            document.getElementById('ctrl-slash-x').value = 0;
+            document.getElementById('ctrl-slash-y').value = 0;
+            document.getElementById('ctrl-gap-rs').value = 0;
+            document.getElementById('ctrl-gap-sl').value = 0;
+            document.getElementById('ctrl-gap-lslash').value = 0;
+            document.getElementById('ctrl-gap-slasha').value = 0;
+            document.getElementById('ctrl-tracking').value = -0.04;
+            document.getElementById('color-rsl').value = '#ffffff';
+            document.getElementById('color-slash').value = '#ffffff';
+            document.getElementById('color-a').value = '#ffffff';
+
+            // Reset displays
+            document.getElementById('val-skew').textContent = '-12°';
+            document.getElementById('val-slash-x').textContent = '0px';
+            document.getElementById('val-slash-y').textContent = '0px';
+            document.getElementById('val-gap-rs').textContent = '0px';
+            document.getElementById('val-gap-sl').textContent = '0px';
+            document.getElementById('val-gap-lslash').textContent = '0px';
+            document.getElementById('val-gap-slasha').textContent = '0px';
+            document.getElementById('val-tracking').textContent = '-0.04em';
+            document.getElementById('hex-rsl').textContent = '#ffffff';
+            document.getElementById('hex-slash').textContent = '#ffffff';
+            document.getElementById('hex-a').textContent = '#ffffff';
+
+            applyPreset('white');
+            setBg('dark');
+            updateLogo();
+        }
+
+        // Copy CSS
+        function copyCSS() {
+            const code = document.getElementById('code-output').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = event.target;
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = 'Copy CSS Code', 2000);
+            });
+        }
+
+        // Download SVG
+        function downloadSVG() {
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" width="400" height="120">
+  <defs>
+    <style>
+      @import url('https://api.fontshare.com/v2/css?f[]=satoshi@900&amp;display=swap');
+      .logo-text { font-family: 'Satoshi', sans-serif; font-weight: 900; font-size: 48px; }
+    </style>
+  </defs>
+  <text x="0" y="45" class="logo-text" fill="${state.colorRSL}" letter-spacing="${state.tracking}em">RSL</text>
+  <text x="${82 + state.gapLSlash}" y="${45 + state.slashY}" class="logo-text" fill="${state.colorSlash}" transform="skewX(${state.skew})">/</text>
+  <text x="${108 + state.gapSlashA}" y="45" class="logo-text" fill="${state.colorA}" letter-spacing="${state.tracking}em">A</text>
+</svg>`;
+
+            const blob = new Blob([svg], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'rsla-logo.svg';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Initial render
+        updateLogo();
+    </script>
+
+</body>
+</html>

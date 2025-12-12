@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
@@ -36,8 +37,15 @@ export default function Navigation() {
         >
             <div className="container mx-auto px-6 flex items-center justify-between">
                 {/* Logo */}
-                <Link href="/" className="text-2xl font-bold font-display tracking-wide z-50">
-                    RSL/A
+                <Link href="/" className="z-50">
+                    <Image
+                        src="/logomark.png"
+                        alt="RSL/A"
+                        width={40}
+                        height={40}
+                        className="w-10 h-10"
+                        priority
+                    />
                 </Link>
 
                 {/* Desktop Menu - Center */}

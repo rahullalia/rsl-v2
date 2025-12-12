@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSL/A Logo Builder - Lockup Version</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #0a0a0a;
+            --color-text: #ffffff;
+            --color-accent: #0070f3;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: 'Satoshi', system-ui, sans-serif;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        h1 { margin-bottom: 8px; font-size: 24px; }
+        .subtitle { color: #666; margin-bottom: 30px; font-size: 14px; }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 40px;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 1000px) {
+            .layout { grid-template-columns: 1fr; }
+        }
+
+        /* Preview Area */
+        .preview-area {
+            background: #111;
+            border-radius: 16px;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 500px;
+            position: sticky;
+            top: 20px;
+        }
+
+        .logo-canvas-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #logo-canvas {
+            max-width: 100%;
+        }
+
+        .size-previews {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .size-preview {
+            text-align: center;
+        }
+
+        .size-preview canvas {
+            display: block;
+            margin: 0 auto 8px;
+        }
+
+        .size-preview span {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .bg-toggle {
+            display: flex;
+            gap: 8px;
+            margin-top: 30px;
+        }
+
+        .bg-toggle button {
+            padding: 10px 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid #333;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .bg-toggle .dark { background: #0a0a0a; color: white; }
+        .bg-toggle .light { background: #ffffff; color: #0a0a0a; }
+        .bg-toggle button.active {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.3);
+        }
+
+        /* Controls Panel */
+        .controls-panel {
+            background: #0d0d0d;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 24px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .panel-header h2 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #999;
+        }
+
+        .reset-btn {
+            background: none;
+            border: 1px solid #333;
+            color: #666;
+            padding: 6px 12px;
+            font-size: 11px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .reset-btn:hover { border-color: #f44; color: #f44; }
+
+        .control-group {
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #222;
+        }
+
+        .control-group:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .control-group h3 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--color-accent);
+            margin: 0 0 16px 0;
+        }
+
+        .control-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .control-row label {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .control-row .value {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 11px;
+            color: var(--color-accent);
+            background: #1a1a1a;
+            padding: 4px 8px;
+            border-radius: 4px;
+            min-width: 55px;
+            text-align: center;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: #222;
+            border-radius: 3px;
+            outline: none;
+            margin: 6px 0 14px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--color-accent);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        input[type="color"] {
+            width: 36px;
+            height: 28px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .color-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .color-row label {
+            font-size: 13px;
+            color: #999;
+            flex: 1;
+        }
+
+        .color-row .color-hex {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 10px;
+            color: #666;
+            background: #1a1a1a;
+            padding: 4px 6px;
+            border-radius: 4px;
+        }
+
+        .presets {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .preset-btn {
+            padding: 8px 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid #333;
+            background: #1a1a1a;
+            color: #999;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover { border-color: var(--color-accent); color: white; }
+        .preset-btn.active { background: var(--color-accent); border-color: var(--color-accent); color: white; }
+
+        /* Export */
+        .export-section { margin-top: 10px; }
+
+        .export-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 13px;
+            font-weight: 700;
+            background: var(--color-accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 8px;
+        }
+
+        .export-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .export-btn.secondary { background: #222; color: #999; }
+        .export-btn.secondary:hover { background: #333; color: white; }
+
+        .export-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .note {
+            color: #555;
+            font-size: 11px;
+            line-height: 1.5;
+            margin-top: 12px;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .checkbox-row input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--color-accent);
+        }
+
+        .checkbox-row label {
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+
+<h1>RSL/A Logo Builder</h1>
+<p class="subtitle">Icon + Wordmark Lockup with Parallelogram Slashes</p>
+
+<div class="layout">
+    <!-- Preview Area -->
+    <div class="preview-area" id="preview-area">
+        <div class="logo-canvas-wrapper">
+            <canvas id="logo-canvas" width="1000" height="200"></canvas>
+        </div>
+
+        <div class="size-previews">
+            <div class="size-preview">
+                <canvas id="preview-md" width="400" height="80"></canvas>
+                <span>400px</span>
+            </div>
+            <div class="size-preview">
+                <canvas id="preview-sm" width="250" height="50"></canvas>
+                <span>250px</span>
+            </div>
+            <div class="size-preview">
+                <canvas id="preview-xs" width="160" height="32"></canvas>
+                <span>160px</span>
+            </div>
+        </div>
+
+        <div class="bg-toggle">
+            <button class="dark active" onclick="setBg('dark')">Dark</button>
+            <button class="light" onclick="setBg('light')">Light</button>
+        </div>
+    </div>
+
+    <!-- Controls Panel -->
+    <div class="controls-panel">
+        <div class="panel-header">
+            <h2>Controls</h2>
+            <button class="reset-btn" onclick="resetAll()">Reset All</button>
+        </div>
+
+        <!-- Icon Controls -->
+        <div class="control-group">
+            <h3>Icon (Blue Square)</h3>
+
+            <div class="control-row">
+                <label>Square Size</label>
+                <span class="value" id="val-icon-size">50px</span>
+            </div>
+            <input type="range" id="ctrl-icon-size" min="30" max="80" value="50" step="1">
+
+            <div class="control-row">
+                <label>Icon Slash Width</label>
+                <span class="value" id="val-icon-slash-w">10px</span>
+            </div>
+            <input type="range" id="ctrl-icon-slash-w" min="4" max="16" value="10" step="1">
+
+            <div class="control-row">
+                <label>Icon Slash Skew</label>
+                <span class="value" id="val-icon-slash-skew">-20deg</span>
+            </div>
+            <input type="range" id="ctrl-icon-slash-skew" min="-40" max="0" value="-20" step="1">
+
+            <div class="control-row">
+                <label>Icon Slash X Offset</label>
+                <span class="value" id="val-icon-slash-x">0px</span>
+            </div>
+            <input type="range" id="ctrl-icon-slash-x" min="-30" max="30" value="0" step="1">
+        </div>
+
+        <!-- Gap Control -->
+        <div class="control-group">
+            <h3>Spacing</h3>
+
+            <div class="control-row">
+                <label>Icon to Text Gap</label>
+                <span class="value" id="val-gap">15px</span>
+            </div>
+            <input type="range" id="ctrl-gap" min="0" max="60" value="15" step="1">
+
+            <div class="control-row">
+                <label>RSL Tracking</label>
+                <span class="value" id="val-tracking">-0.040em</span>
+            </div>
+            <input type="range" id="ctrl-tracking" min="-0.1" max="0.05" value="-0.04" step="0.005">
+
+            <div class="control-row">
+                <label>L to Slash Gap</label>
+                <span class="value" id="val-l-slash">0px</span>
+            </div>
+            <input type="range" id="ctrl-l-slash" min="-30" max="30" value="0" step="1">
+
+            <div class="control-row">
+                <label>Slash to A Gap</label>
+                <span class="value" id="val-slash-a">-4px</span>
+            </div>
+            <input type="range" id="ctrl-slash-a" min="-30" max="30" value="-4" step="1">
+        </div>
+
+        <!-- Wordmark Slash Controls -->
+        <div class="control-group">
+            <h3>Wordmark Slash (Parallelogram)</h3>
+
+            <div class="control-row">
+                <label>Slash Width</label>
+                <span class="value" id="val-text-slash-w">10px</span>
+            </div>
+            <input type="range" id="ctrl-text-slash-w" min="4" max="20" value="10" step="1">
+
+            <div class="control-row">
+                <label>Slash Skew Angle</label>
+                <span class="value" id="val-text-slash-skew">-20deg</span>
+            </div>
+            <input type="range" id="ctrl-text-slash-skew" min="-45" max="0" value="-20" step="1">
+
+            <div class="control-row">
+                <label>Slash X Offset</label>
+                <span class="value" id="val-text-slash-x">10px</span>
+            </div>
+            <input type="range" id="ctrl-text-slash-x" min="-40" max="40" value="10" step="1">
+
+            <div class="control-row">
+                <label>Slash Y Offset</label>
+                <span class="value" id="val-text-slash-y">0px</span>
+            </div>
+            <input type="range" id="ctrl-text-slash-y" min="-20" max="20" value="0" step="1">
+
+            <div class="control-row">
+                <label>Slash Height %</label>
+                <span class="value" id="val-text-slash-h">75%</span>
+            </div>
+            <input type="range" id="ctrl-text-slash-h" min="50" max="120" value="75" step="1">
+        </div>
+
+        <!-- Font Size -->
+        <div class="control-group">
+            <h3>Typography</h3>
+
+            <div class="control-row">
+                <label>Font Size</label>
+                <span class="value" id="val-font-size">50px</span>
+            </div>
+            <input type="range" id="ctrl-font-size" min="24" max="60" value="50" step="1">
+        </div>
+
+        <!-- Colors -->
+        <div class="control-group">
+            <h3>Colors</h3>
+
+            <div class="color-row">
+                <label>Icon Square</label>
+                <input type="color" id="color-icon-bg" value="#0070f3">
+                <span class="color-hex" id="hex-icon-bg">#0070f3</span>
+            </div>
+
+            <div class="color-row">
+                <label>Icon Slash</label>
+                <input type="color" id="color-icon-slash" value="#ffffff">
+                <span class="color-hex" id="hex-icon-slash">#ffffff</span>
+            </div>
+
+            <div class="color-row">
+                <label>RSL Text</label>
+                <input type="color" id="color-rsl" value="#ffffff">
+                <span class="color-hex" id="hex-rsl">#ffffff</span>
+            </div>
+
+            <div class="color-row">
+                <label>Wordmark Slash</label>
+                <input type="color" id="color-text-slash" value="#0070f3">
+                <span class="color-hex" id="hex-text-slash">#0070f3</span>
+            </div>
+
+            <div class="color-row">
+                <label>A Text</label>
+                <input type="color" id="color-a" value="#ffffff">
+                <span class="color-hex" id="hex-a">#ffffff</span>
+            </div>
+        </div>
+
+        <!-- Presets -->
+        <div class="control-group">
+            <h3>Color Presets</h3>
+            <div class="presets">
+                <button class="preset-btn active" onclick="applyPreset('default')">Default</button>
+                <button class="preset-btn" onclick="applyPreset('mono-white')">All White</button>
+                <button class="preset-btn" onclick="applyPreset('mono-blue')">All Blue</button>
+                <button class="preset-btn" onclick="applyPreset('inverse')">Inverse</button>
+            </div>
+        </div>
+
+        <!-- Export Options -->
+        <div class="control-group">
+            <h3>Export Settings</h3>
+
+            <div class="checkbox-row">
+                <input type="checkbox" id="export-transparent">
+                <label for="export-transparent">Transparent background</label>
+            </div>
+
+            <div class="control-row">
+                <label>Export Scale</label>
+                <select id="export-scale" style="background: #1a1a1a; border: 1px solid #333; color: white; padding: 6px 12px; border-radius: 6px; font-size: 13px;">
+                    <option value="1">1x (base)</option>
+                    <option value="2">2x</option>
+                    <option value="4">4x</option>
+                    <option value="8">8x</option>
+                    <option value="10" selected>10x</option>
+                    <option value="20">20x</option>
+                    <option value="40">40x</option>
+                    <option value="60">60x (max for lockup)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Export Full Lockup -->
+        <div class="control-group export-section">
+            <h3>Full Lockup (Icon + Wordmark)</h3>
+            <button class="export-btn" onclick="downloadLockupPNG()">Download PNG</button>
+            <button class="export-btn secondary" onclick="downloadLockupSVG()">Download SVG</button>
+            <p class="note" id="lockup-size">Size at 10x: ~5000 × 1000px</p>
+        </div>
+
+        <!-- Export Logomark -->
+        <div class="control-group export-section">
+            <h3>Logomark (Icon Only)</h3>
+            <button class="export-btn" onclick="downloadLogomarkPNG()">Download PNG</button>
+            <button class="export-btn secondary" onclick="downloadLogomarkSVG()">Download SVG</button>
+            <p class="note" id="logomark-size">Size at 10x: 500 × 500px</p>
+        </div>
+
+        <!-- Export Wordmark -->
+        <div class="control-group export-section">
+            <h3>Wordmark (Text Only)</h3>
+            <button class="export-btn" onclick="downloadWordmarkPNG()">Download PNG</button>
+            <button class="export-btn secondary" onclick="downloadWordmarkSVG()">Download SVG</button>
+            <p class="note" id="wordmark-size">Size at 10x: ~3500 × 750px</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // State
+    const state = {
+        iconSize: 50,
+        iconSlashWidth: 10,
+        iconSlashSkew: -20,
+        iconSlashX: 0,
+        gap: 15,
+        tracking: -0.04,
+        lSlashGap: 0,
+        slashAGap: -4,
+        textSlashWidth: 10,
+        textSlashSkew: -20,
+        textSlashX: 10,
+        textSlashY: 0,
+        textSlashHeight: 75,
+        fontSize: 50,
+        colorIconBg: '#0070f3',
+        colorIconSlash: '#ffffff',
+        colorRSL: '#ffffff',
+        colorTextSlash: '#0070f3',
+        colorA: '#ffffff',
+        bgDark: true
+    };
+
+    const canvas = document.getElementById('logo-canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Draw parallelogram slash
+    function drawSlash(ctx, x, y, width, height, skewAngle, color) {
+        const skewOffset = Math.tan(skewAngle * Math.PI / 180) * height;
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(x - skewOffset / 2, y);
+        ctx.lineTo(x - skewOffset / 2 + width, y);
+        ctx.lineTo(x + skewOffset / 2 + width, y + height);
+        ctx.lineTo(x + skewOffset / 2, y + height);
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    function render(targetCanvas, scale = 1) {
+        const tctx = targetCanvas.getContext('2d');
+        const w = targetCanvas.width;
+        const h = targetCanvas.height;
+
+        // Scale factor for different canvas sizes
+        const baseWidth = 800;
+        const s = w / baseWidth * scale;
+
+        // Clear
+        tctx.clearRect(0, 0, w, h);
+
+        // Background
+        if (!document.getElementById('export-transparent').checked || targetCanvas === canvas) {
+            tctx.fillStyle = state.bgDark ? '#0a0a0a' : '#ffffff';
+            tctx.fillRect(0, 0, w, h);
+        }
+
+        // Calculate positions
+        const iconSize = state.iconSize * s;
+        const iconY = (h - iconSize) / 2;
+        const iconX = 20 * s;
+
+        // Draw icon square
+        tctx.fillStyle = state.colorIconBg;
+        tctx.fillRect(iconX, iconY, iconSize, iconSize);
+
+        // Draw icon slash (parallelogram)
+        const iconSlashHeight = iconSize - 8 * s;
+        const iconSlashY = iconY + 4 * s;
+        const iconSlashCenterX = iconX + iconSize / 2 + state.iconSlashX * s;
+        drawSlash(tctx, iconSlashCenterX - state.iconSlashWidth * s / 2, iconSlashY, state.iconSlashWidth * s, iconSlashHeight, state.iconSlashSkew, state.colorIconSlash);
+
+        // Text positioning
+        const textX = iconX + iconSize + state.gap * s;
+        const fontSize = state.fontSize * s;
+        const textY = h / 2 + fontSize * 0.35;
+
+        // Set font
+        tctx.font = `900 ${fontSize}px Satoshi, system-ui, sans-serif`;
+
+        // Draw RSL
+        tctx.fillStyle = state.colorRSL;
+        const rslText = 'RSL';
+        let currentX = textX;
+
+        // Apply tracking by drawing each letter
+        for (let i = 0; i < rslText.length; i++) {
+            tctx.fillText(rslText[i], currentX, textY);
+            currentX += tctx.measureText(rslText[i]).width + (state.tracking * fontSize);
+        }
+
+        // Add L to slash gap
+        currentX += state.lSlashGap * s;
+
+        // Draw wordmark slash (parallelogram)
+        // Auto-center: slash is centered vertically within the cap height regardless of height %
+        const capHeight = fontSize * 0.75; // Approximate cap height
+        const slashHeight = fontSize * (state.textSlashHeight / 100);
+        const capTop = textY - capHeight;
+        const slashY = capTop + (capHeight - slashHeight) / 2 + state.textSlashY * s;
+        currentX += state.textSlashX * s;
+        drawSlash(tctx, currentX, slashY, state.textSlashWidth * s, slashHeight, state.textSlashSkew, state.colorTextSlash);
+        currentX += state.textSlashWidth * s + 2 * s;
+
+        // Add slash to A gap
+        currentX += state.slashAGap * s;
+
+        // Draw A
+        tctx.fillStyle = state.colorA;
+        tctx.fillText('A', currentX, textY);
+    }
+
+    function renderAll() {
+        render(canvas);
+        render(document.getElementById('preview-md'));
+        render(document.getElementById('preview-sm'));
+        render(document.getElementById('preview-xs'));
+    }
+
+    // Bind controls
+    function bindSlider(id, stateKey, suffix = '', transform = v => v) {
+        const ctrl = document.getElementById(`ctrl-${id}`);
+        const val = document.getElementById(`val-${id}`);
+        if (!ctrl || !val) return;
+
+        ctrl.addEventListener('input', (e) => {
+            const rawVal = parseFloat(e.target.value);
+            state[stateKey] = transform(rawVal);
+            val.textContent = rawVal + suffix;
+            renderAll();
+        });
+    }
+
+    // Initialize sliders
+    bindSlider('icon-size', 'iconSize', 'px');
+    bindSlider('icon-slash-w', 'iconSlashWidth', 'px');
+    bindSlider('icon-slash-skew', 'iconSlashSkew', 'deg');
+    bindSlider('icon-slash-x', 'iconSlashX', 'px');
+    bindSlider('gap', 'gap', 'px');
+    bindSlider('l-slash', 'lSlashGap', 'px');
+    bindSlider('slash-a', 'slashAGap', 'px');
+    bindSlider('text-slash-w', 'textSlashWidth', 'px');
+    bindSlider('text-slash-skew', 'textSlashSkew', 'deg');
+    bindSlider('text-slash-x', 'textSlashX', 'px');
+    bindSlider('text-slash-y', 'textSlashY', 'px');
+    bindSlider('text-slash-h', 'textSlashHeight', '%');
+    bindSlider('font-size', 'fontSize', 'px');
+
+    // Tracking special case
+    document.getElementById('ctrl-tracking').addEventListener('input', (e) => {
+        state.tracking = parseFloat(e.target.value);
+        document.getElementById('val-tracking').textContent = state.tracking.toFixed(3) + 'em';
+        renderAll();
+    });
+
+    // Color controls
+    const colorBindings = [
+        ['icon-bg', 'colorIconBg'],
+        ['icon-slash', 'colorIconSlash'],
+        ['rsl', 'colorRSL'],
+        ['text-slash', 'colorTextSlash'],
+        ['a', 'colorA']
+    ];
+
+    colorBindings.forEach(([id, stateKey]) => {
+        const input = document.getElementById(`color-${id}`);
+        const hex = document.getElementById(`hex-${id}`);
+        if (!input || !hex) return;
+
+        input.addEventListener('input', (e) => {
+            state[stateKey] = e.target.value;
+            hex.textContent = e.target.value;
+            renderAll();
+            clearPresets();
+        });
+    });
+
+    // Presets
+    function applyPreset(preset) {
+        clearPresets();
+        event.target.classList.add('active');
+
+        switch (preset) {
+            case 'default':
+                state.colorIconBg = '#0070f3';
+                state.colorIconSlash = '#ffffff';
+                state.colorRSL = '#ffffff';
+                state.colorTextSlash = '#0070f3';
+                state.colorA = '#ffffff';
+                break;
+            case 'mono-white':
+                state.colorIconBg = '#ffffff';
+                state.colorIconSlash = '#0a0a0a';
+                state.colorRSL = '#ffffff';
+                state.colorTextSlash = '#ffffff';
+                state.colorA = '#ffffff';
+                break;
+            case 'mono-blue':
+                state.colorIconBg = '#0070f3';
+                state.colorIconSlash = '#ffffff';
+                state.colorRSL = '#0070f3';
+                state.colorTextSlash = '#0070f3';
+                state.colorA = '#0070f3';
+                break;
+            case 'inverse':
+                state.colorIconBg = '#ffffff';
+                state.colorIconSlash = '#0070f3';
+                state.colorRSL = '#ffffff';
+                state.colorTextSlash = '#ffffff';
+                state.colorA = '#0070f3';
+                break;
+        }
+
+        updateColorInputs();
+        renderAll();
+    }
+
+    function clearPresets() {
+        document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+    }
+
+    function updateColorInputs() {
+        document.getElementById('color-icon-bg').value = state.colorIconBg;
+        document.getElementById('color-icon-slash').value = state.colorIconSlash;
+        document.getElementById('color-rsl').value = state.colorRSL;
+        document.getElementById('color-text-slash').value = state.colorTextSlash;
+        document.getElementById('color-a').value = state.colorA;
+
+        document.getElementById('hex-icon-bg').textContent = state.colorIconBg;
+        document.getElementById('hex-icon-slash').textContent = state.colorIconSlash;
+        document.getElementById('hex-rsl').textContent = state.colorRSL;
+        document.getElementById('hex-text-slash').textContent = state.colorTextSlash;
+        document.getElementById('hex-a').textContent = state.colorA;
+    }
+
+    // Background toggle
+    function setBg(mode) {
+        document.querySelectorAll('.bg-toggle button').forEach(btn => btn.classList.remove('active'));
+        if (mode === 'dark') {
+            document.getElementById('preview-area').style.background = '#111';
+            document.querySelector('.bg-toggle .dark').classList.add('active');
+            state.bgDark = true;
+        } else {
+            document.getElementById('preview-area').style.background = '#ffffff';
+            document.querySelector('.bg-toggle .light').classList.add('active');
+            state.bgDark = false;
+        }
+        renderAll();
+    }
+
+    // Reset
+    function resetAll() {
+        state.iconSize = 50;
+        state.iconSlashWidth = 10;
+        state.iconSlashSkew = -20;
+        state.iconSlashX = 0;
+        state.gap = 15;
+        state.tracking = -0.04;
+        state.lSlashGap = 0;
+        state.slashAGap = -4;
+        state.textSlashWidth = 10;
+        state.textSlashSkew = -20;
+        state.textSlashX = 10;
+        state.textSlashY = 0;
+        state.textSlashHeight = 75;
+        state.fontSize = 50;
+        state.colorIconBg = '#0070f3';
+        state.colorIconSlash = '#ffffff';
+        state.colorRSL = '#ffffff';
+        state.colorTextSlash = '#0070f3';
+        state.colorA = '#ffffff';
+
+        // Reset all inputs
+        document.getElementById('ctrl-icon-size').value = 50;
+        document.getElementById('ctrl-icon-slash-w').value = 10;
+        document.getElementById('ctrl-icon-slash-skew').value = -20;
+        document.getElementById('ctrl-icon-slash-x').value = 0;
+        document.getElementById('ctrl-gap').value = 15;
+        document.getElementById('ctrl-tracking').value = -0.04;
+        document.getElementById('ctrl-l-slash').value = 0;
+        document.getElementById('ctrl-slash-a').value = -4;
+        document.getElementById('ctrl-text-slash-w').value = 10;
+        document.getElementById('ctrl-text-slash-skew').value = -20;
+        document.getElementById('ctrl-text-slash-x').value = 10;
+        document.getElementById('ctrl-text-slash-y').value = 0;
+        document.getElementById('ctrl-text-slash-h').value = 75;
+        document.getElementById('ctrl-font-size').value = 50;
+
+        // Reset displays
+        document.getElementById('val-icon-size').textContent = '50px';
+        document.getElementById('val-icon-slash-w').textContent = '10px';
+        document.getElementById('val-icon-slash-skew').textContent = '-20deg';
+        document.getElementById('val-icon-slash-x').textContent = '0px';
+        document.getElementById('val-gap').textContent = '15px';
+        document.getElementById('val-tracking').textContent = '-0.040em';
+        document.getElementById('val-l-slash').textContent = '0px';
+        document.getElementById('val-slash-a').textContent = '-4px';
+        document.getElementById('val-text-slash-w').textContent = '10px';
+        document.getElementById('val-text-slash-skew').textContent = '-20deg';
+        document.getElementById('val-text-slash-x').textContent = '10px';
+        document.getElementById('val-text-slash-y').textContent = '0px';
+        document.getElementById('val-text-slash-h').textContent = '75%';
+        document.getElementById('val-font-size').textContent = '50px';
+
+        updateColorInputs();
+        clearPresets();
+        document.querySelector('.preset-btn').classList.add('active');
+        setBg('dark');
+        renderAll();
+    }
+
+    // Get selected export scale
+    function getExportScale() {
+        return parseInt(document.getElementById('export-scale').value);
+    }
+
+    // Update size notes when scale changes
+    document.getElementById('export-scale').addEventListener('change', updateSizeNotes);
+
+    function updateSizeNotes() {
+        const scale = getExportScale();
+        const lockupW = Math.round(500 * scale);
+        const lockupH = Math.round(100 * scale);
+        const logomarkSize = Math.round(state.iconSize * scale);
+        const wordmarkW = Math.round(350 * scale);
+        const wordmarkH = Math.round(75 * scale);
+
+        document.getElementById('lockup-size').textContent = `Size at ${scale}x: ${lockupW} × ${lockupH}px`;
+        document.getElementById('logomark-size').textContent = `Size at ${scale}x: ${logomarkSize} × ${logomarkSize}px`;
+        document.getElementById('wordmark-size').textContent = `Size at ${scale}x: ~${wordmarkW} × ${wordmarkH}px`;
+    }
+
+    // ============================================
+    // FULL LOCKUP EXPORT (Icon + Wordmark)
+    // ============================================
+    function downloadLockupPNG() {
+        const scale = getExportScale();
+        const transparent = document.getElementById('export-transparent').checked;
+
+        const exportCanvas = document.createElement('canvas');
+        const baseWidth = 500;
+        const baseHeight = 100;
+        exportCanvas.width = baseWidth * scale;
+        exportCanvas.height = baseHeight * scale;
+
+        // Check if canvas is too large
+        if (exportCanvas.width > 32767 || exportCanvas.height > 32767) {
+            alert(`Canvas too large (${exportCanvas.width}×${exportCanvas.height}). Max is 32767px per side. Try a smaller scale.`);
+            return;
+        }
+
+        const ctx = exportCanvas.getContext('2d');
+        if (!ctx) {
+            alert('Failed to create canvas context. Try a smaller scale.');
+            return;
+        }
+
+        ctx.clearRect(0, 0, exportCanvas.width, exportCanvas.height);
+
+        if (!transparent) {
+            ctx.fillStyle = state.bgDark ? '#0a0a0a' : '#ffffff';
+            ctx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+        }
+
+        renderLockupToCanvas(ctx, scale);
+
+        try {
+            exportCanvas.toBlob(function(blob) {
+                if (!blob) {
+                    alert('Export failed. Canvas may be too large. Try a smaller scale.');
+                    return;
+                }
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.download = `rsla-lockup-${scale}x.png`;
+                link.href = url;
+                link.click();
+                URL.revokeObjectURL(url);
+            }, 'image/png');
+        } catch (e) {
+            alert('Export failed: ' + e.message + '. Try a smaller scale.');
+        }
+    }
+
+    function renderLockupToCanvas(ctx, scale) {
+        const s = scale;
+        const padding = 20 * s;
+        const iconSize = state.iconSize * s;
+        const iconX = padding;
+        const iconY = (100 * s - iconSize) / 2;
+
+        // Draw icon square
+        ctx.fillStyle = state.colorIconBg;
+        ctx.fillRect(iconX, iconY, iconSize, iconSize);
+
+        // Draw icon slash
+        const iconSlashHeight = iconSize - 8 * s;
+        const iconSlashY = iconY + 4 * s;
+        const iconSlashCenterX = iconX + iconSize / 2 + state.iconSlashX * s;
+        drawSlash(ctx, iconSlashCenterX - state.iconSlashWidth * s / 2, iconSlashY, state.iconSlashWidth * s, iconSlashHeight, state.iconSlashSkew, state.colorIconSlash);
+
+        // Text positioning
+        const fontSize = state.fontSize * s;
+        const textX = iconX + iconSize + state.gap * s;
+        const textY = (100 * s) / 2 + fontSize * 0.35;
+
+        ctx.font = `900 ${fontSize}px Satoshi, system-ui, sans-serif`;
+
+        // Draw RSL
+        ctx.fillStyle = state.colorRSL;
+        let currentX = textX;
+        for (const char of 'RSL') {
+            ctx.fillText(char, currentX, textY);
+            currentX += ctx.measureText(char).width + (state.tracking * fontSize);
+        }
+
+        currentX += state.lSlashGap * s;
+
+        // Draw wordmark slash (auto-centered)
+        const capHeight = fontSize * 0.75;
+        const slashHeight = fontSize * (state.textSlashHeight / 100);
+        const capTop = textY - capHeight;
+        const slashY = capTop + (capHeight - slashHeight) / 2 + state.textSlashY * s;
+        currentX += state.textSlashX * s;
+        drawSlash(ctx, currentX, slashY, state.textSlashWidth * s, slashHeight, state.textSlashSkew, state.colorTextSlash);
+        currentX += state.textSlashWidth * s + 2 * s;
+
+        currentX += state.slashAGap * s;
+
+        // Draw A
+        ctx.fillStyle = state.colorA;
+        ctx.fillText('A', currentX, textY);
+    }
+
+    function downloadLockupSVG() {
+        const transparent = document.getElementById('export-transparent').checked;
+        const iconSize = state.iconSize;
+        const padding = 20;
+        const iconX = padding;
+        const iconY = (100 - iconSize) / 2;
+
+        const iconSlashHeight = iconSize - 8;
+        const iconSlashY = iconY + 4;
+        const iconSlashSkewOffset = Math.tan(state.iconSlashSkew * Math.PI / 180) * iconSlashHeight;
+        const iconSlashCenterX = iconX + iconSize / 2 + state.iconSlashX;
+
+        const textSlashHeight = state.fontSize * (state.textSlashHeight / 100);
+        const textSlashSkewOffset = Math.tan(state.textSlashSkew * Math.PI / 180) * textSlashHeight;
+
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 100">
+  <defs>
+    <style>@import url('https://api.fontshare.com/v2/css?f[]=satoshi@900&amp;display=swap');
+    .wordmark { font-family: 'Satoshi', system-ui, sans-serif; font-weight: 900; font-size: ${state.fontSize}px; letter-spacing: ${state.tracking}em; }</style>
+  </defs>
+  ${!transparent ? `<rect width="500" height="100" fill="${state.bgDark ? '#0a0a0a' : '#ffffff'}"/>` : ''}
+  <rect x="${iconX}" y="${iconY}" width="${iconSize}" height="${iconSize}" fill="${state.colorIconBg}"/>
+  <polygon points="${iconSlashCenterX - state.iconSlashWidth/2 - iconSlashSkewOffset/2},${iconSlashY} ${iconSlashCenterX + state.iconSlashWidth/2 - iconSlashSkewOffset/2},${iconSlashY} ${iconSlashCenterX + state.iconSlashWidth/2 + iconSlashSkewOffset/2},${iconSlashY + iconSlashHeight} ${iconSlashCenterX - state.iconSlashWidth/2 + iconSlashSkewOffset/2},${iconSlashY + iconSlashHeight}" fill="${state.colorIconSlash}"/>
+  <text x="${iconX + iconSize + state.gap}" y="62" class="wordmark" fill="${state.colorRSL}">RSL</text>
+  <polygon points="${iconX + iconSize + state.gap + 100 + state.lSlashGap + state.textSlashX - textSlashSkewOffset/2},${50 - textSlashHeight/2 + state.textSlashY} ${iconX + iconSize + state.gap + 100 + state.lSlashGap + state.textSlashX + state.textSlashWidth - textSlashSkewOffset/2},${50 - textSlashHeight/2 + state.textSlashY} ${iconX + iconSize + state.gap + 100 + state.lSlashGap + state.textSlashX + state.textSlashWidth + textSlashSkewOffset/2},${50 + textSlashHeight/2 + state.textSlashY} ${iconX + iconSize + state.gap + 100 + state.lSlashGap + state.textSlashX + textSlashSkewOffset/2},${50 + textSlashHeight/2 + state.textSlashY}" fill="${state.colorTextSlash}"/>
+  <text x="${iconX + iconSize + state.gap + 100 + state.lSlashGap + state.textSlashWidth + 4 + state.slashAGap + state.textSlashX}" y="62" class="wordmark" fill="${state.colorA}">A</text>
+</svg>`;
+
+        downloadSVGBlob(svg, 'rsla-lockup.svg');
+    }
+
+    // ============================================
+    // LOGOMARK EXPORT (Icon Only)
+    // ============================================
+    function downloadLogomarkPNG() {
+        const scale = getExportScale();
+        const transparent = document.getElementById('export-transparent').checked;
+        const size = state.iconSize * scale;
+
+        if (size > 32767) {
+            alert(`Canvas too large (${size}×${size}). Max is 32767px. Try a smaller scale.`);
+            return;
+        }
+
+        const exportCanvas = document.createElement('canvas');
+        exportCanvas.width = size;
+        exportCanvas.height = size;
+
+        const ctx = exportCanvas.getContext('2d');
+        if (!ctx) {
+            alert('Failed to create canvas context. Try a smaller scale.');
+            return;
+        }
+
+        ctx.clearRect(0, 0, size, size);
+
+        if (!transparent) {
+            ctx.fillStyle = state.bgDark ? '#0a0a0a' : '#ffffff';
+            ctx.fillRect(0, 0, size, size);
+        }
+
+        // Draw icon square
+        ctx.fillStyle = state.colorIconBg;
+        ctx.fillRect(0, 0, size, size);
+
+        // Draw icon slash
+        const iconSlashHeight = size - 8 * scale;
+        const iconSlashY = 4 * scale;
+        const iconSlashCenterX = size / 2 + state.iconSlashX * scale;
+        drawSlash(ctx, iconSlashCenterX - state.iconSlashWidth * scale / 2, iconSlashY, state.iconSlashWidth * scale, iconSlashHeight, state.iconSlashSkew, state.colorIconSlash);
+
+        try {
+            exportCanvas.toBlob(function(blob) {
+                if (!blob) {
+                    alert('Export failed. Try a smaller scale.');
+                    return;
+                }
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.download = `rsla-logomark-${scale}x.png`;
+                link.href = url;
+                link.click();
+                URL.revokeObjectURL(url);
+            }, 'image/png');
+        } catch (e) {
+            alert('Export failed: ' + e.message);
+        }
+    }
+
+    function downloadLogomarkSVG() {
+        const transparent = document.getElementById('export-transparent').checked;
+        const size = state.iconSize;
+        const iconSlashHeight = size - 8;
+        const iconSlashY = 4;
+        const iconSlashSkewOffset = Math.tan(state.iconSlashSkew * Math.PI / 180) * iconSlashHeight;
+        const iconSlashCenterX = size / 2 + state.iconSlashX;
+
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}">
+  ${!transparent ? `<rect width="${size}" height="${size}" fill="${state.bgDark ? '#0a0a0a' : '#ffffff'}"/>` : ''}
+  <rect width="${size}" height="${size}" fill="${state.colorIconBg}"/>
+  <polygon points="${iconSlashCenterX - state.iconSlashWidth/2 - iconSlashSkewOffset/2},${iconSlashY} ${iconSlashCenterX + state.iconSlashWidth/2 - iconSlashSkewOffset/2},${iconSlashY} ${iconSlashCenterX + state.iconSlashWidth/2 + iconSlashSkewOffset/2},${iconSlashY + iconSlashHeight} ${iconSlashCenterX - state.iconSlashWidth/2 + iconSlashSkewOffset/2},${iconSlashY + iconSlashHeight}" fill="${state.colorIconSlash}"/>
+</svg>`;
+
+        downloadSVGBlob(svg, 'rsla-logomark.svg');
+    }
+
+    // ============================================
+    // WORDMARK EXPORT (Text Only - RSL/A)
+    // ============================================
+    function downloadWordmarkPNG() {
+        const scale = getExportScale();
+        const transparent = document.getElementById('export-transparent').checked;
+
+        const exportCanvas = document.createElement('canvas');
+        const baseWidth = 350;
+        const baseHeight = 75;
+        exportCanvas.width = baseWidth * scale;
+        exportCanvas.height = baseHeight * scale;
+
+        if (exportCanvas.width > 32767 || exportCanvas.height > 32767) {
+            alert(`Canvas too large (${exportCanvas.width}×${exportCanvas.height}). Max is 32767px. Try a smaller scale.`);
+            return;
+        }
+
+        const ctx = exportCanvas.getContext('2d');
+        if (!ctx) {
+            alert('Failed to create canvas context. Try a smaller scale.');
+            return;
+        }
+
+        ctx.clearRect(0, 0, exportCanvas.width, exportCanvas.height);
+
+        if (!transparent) {
+            ctx.fillStyle = state.bgDark ? '#0a0a0a' : '#ffffff';
+            ctx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+        }
+
+        renderWordmarkToCanvas(ctx, scale, baseHeight);
+
+        try {
+            exportCanvas.toBlob(function(blob) {
+                if (!blob) {
+                    alert('Export failed. Try a smaller scale.');
+                    return;
+                }
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.download = `rsla-wordmark-${scale}x.png`;
+                link.href = url;
+                link.click();
+                URL.revokeObjectURL(url);
+            }, 'image/png');
+        } catch (e) {
+            alert('Export failed: ' + e.message);
+        }
+    }
+
+    function renderWordmarkToCanvas(ctx, scale, baseHeight) {
+        const s = scale;
+        const fontSize = state.fontSize * s;
+        const padding = 15 * s;
+        const textY = (baseHeight * s) / 2 + fontSize * 0.35;
+
+        ctx.font = `900 ${fontSize}px Satoshi, system-ui, sans-serif`;
+
+        // Draw RSL
+        ctx.fillStyle = state.colorRSL;
+        let currentX = padding;
+        for (const char of 'RSL') {
+            ctx.fillText(char, currentX, textY);
+            currentX += ctx.measureText(char).width + (state.tracking * fontSize);
+        }
+
+        currentX += state.lSlashGap * s;
+
+        // Draw wordmark slash (auto-centered)
+        const capHeight = fontSize * 0.75;
+        const slashHeight = fontSize * (state.textSlashHeight / 100);
+        const capTop = textY - capHeight;
+        const slashY = capTop + (capHeight - slashHeight) / 2 + state.textSlashY * s;
+        currentX += state.textSlashX * s;
+        drawSlash(ctx, currentX, slashY, state.textSlashWidth * s, slashHeight, state.textSlashSkew, state.colorTextSlash);
+        currentX += state.textSlashWidth * s + 2 * s;
+
+        currentX += state.slashAGap * s;
+
+        // Draw A
+        ctx.fillStyle = state.colorA;
+        ctx.fillText('A', currentX, textY);
+    }
+
+    function downloadWordmarkSVG() {
+        const transparent = document.getElementById('export-transparent').checked;
+        const textSlashHeight = state.fontSize * (state.textSlashHeight / 100);
+        const textSlashSkewOffset = Math.tan(state.textSlashSkew * Math.PI / 180) * textSlashHeight;
+
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 75">
+  <defs>
+    <style>@import url('https://api.fontshare.com/v2/css?f[]=satoshi@900&amp;display=swap');
+    .wordmark { font-family: 'Satoshi', system-ui, sans-serif; font-weight: 900; font-size: ${state.fontSize}px; letter-spacing: ${state.tracking}em; }</style>
+  </defs>
+  ${!transparent ? `<rect width="350" height="75" fill="${state.bgDark ? '#0a0a0a' : '#ffffff'}"/>` : ''}
+  <text x="15" y="50" class="wordmark" fill="${state.colorRSL}">RSL</text>
+  <polygon points="${115 + state.lSlashGap + state.textSlashX - textSlashSkewOffset/2},${37.5 - textSlashHeight/2 + state.textSlashY} ${115 + state.lSlashGap + state.textSlashX + state.textSlashWidth - textSlashSkewOffset/2},${37.5 - textSlashHeight/2 + state.textSlashY} ${115 + state.lSlashGap + state.textSlashX + state.textSlashWidth + textSlashSkewOffset/2},${37.5 + textSlashHeight/2 + state.textSlashY} ${115 + state.lSlashGap + state.textSlashX + textSlashSkewOffset/2},${37.5 + textSlashHeight/2 + state.textSlashY}" fill="${state.colorTextSlash}"/>
+  <text x="${115 + state.lSlashGap + state.textSlashWidth + 4 + state.slashAGap + state.textSlashX}" y="50" class="wordmark" fill="${state.colorA}">A</text>
+</svg>`;
+
+        downloadSVGBlob(svg, 'rsla-wordmark.svg');
+    }
+
+    // Helper to download SVG
+    function downloadSVGBlob(svgContent, filename) {
+        const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    // Initial render
+    renderAll();
+</script>
+
+</body>
+</html>
