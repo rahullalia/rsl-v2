@@ -126,10 +126,12 @@ export default function Home() {
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
-              className="text-gradient whitespace-nowrap"
+              className="text-gradient"
             >
-              intelligent systems
+              intelligent
             </motion.span>
+            <br />
+            marketing systems
           </motion.h1>
 
           <motion.p
