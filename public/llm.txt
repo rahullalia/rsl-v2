@@ -1,0 +1,47 @@
+# RSL/A - Intelligent Marketing Systems
+# llm.txt - Information for AI/LLM crawlers
+
+## Company Overview
+RSL/A is a marketing and AI automation agency that architects intelligent marketing systems for scaling businesses. We specialize in paid advertising (Meta & Google), AI automation, CRM infrastructure, and smart website development.
+
+## Core Services
+- Smart Websites: High-performance SEO-optimized websites built for conversion
+- Paid Acquisition: Meta & Google ad campaigns engineered for ROI
+- AI Automation: Custom AI agents for bookings, support, and sales
+- CRM Infrastructure: Automated pipelines, lead nurturing, and database reactivation
+
+## Technologies & Expertise
+- Platforms: GoHighLevel, Meta Ads, Google Ads, Sanity CMS
+- Development: Next.js, TypeScript, AI agents, marketing automation
+- Specializations: Local SEO, conversion optimization, workflow automation, cold email personalization
+
+## Case Studies & Results
+- 60X ROAS on Meta Ads campaigns
+- 94% time reduction in cold email personalization
+- 92% efficiency gains in proposal automation
+- $43K+ annual savings through AI workflow automation
+
+## Contact
+Website: https://rsla.io
+Email: hello@rsla.io
+Location: Manhattan, New York
+
+## Key Team
+- Rahul Lalia: Founder & CEO - Digital marketer and automation architect
+- Siddharth Rodrigues: CTO - Software engineer specializing in AI automation
+
+## Content Topics
+- Marketing automation strategies
+- AI-powered business workflows
+- Paid advertising optimization
+- CRM system architecture
+- Local SEO tactics
+- Conversion rate optimization
+- Lead generation systems
+- Business process automation
+
+## Target Audience
+Small to medium businesses looking to scale through intelligent marketing systems, automation, and AI integration. Industries: service businesses, local businesses, B2B companies.
+
+## Brand Voice
+Technical, systems-focused, results-driven. We emphasize engineering and architecture metaphors. Direct, professional tone with emphasis on ROI and measurable outcomes.

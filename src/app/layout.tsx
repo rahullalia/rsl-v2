@@ -8,6 +8,25 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 export const metadata: Metadata = {
   title: "RSL/A | Intelligent Marketing Systems",
   description: "We architect intelligent marketing systems. Paid Ads, AI Automation, and Smart Infrastructure for scaling businesses.",
+  keywords: [
+    'marketing automation',
+    'AI automation',
+    'intelligent marketing systems',
+    'paid advertising',
+    'Meta ads',
+    'Google ads',
+    'CRM automation',
+    'GoHighLevel',
+    'marketing agency',
+    'AI agents',
+    'lead generation',
+    'business automation',
+    'workflow automation',
+    'cold email automation',
+    'local SEO',
+    'conversion optimization',
+    'ROI optimization',
+  ],
   metadataBase: new URL('https://rsla.io'),
   icons: {
     icon: [
@@ -54,6 +73,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
         <link
           href="https://api.fontshare.com/v2/css?f[]=satoshi@700,900&display=swap"
           rel="stylesheet"

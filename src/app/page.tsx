@@ -114,7 +114,7 @@ export default function Home() {
       <Navigation />
 
       {/* HERO SECTION */}
-      <section className="min-h-screen flex flex-col justify-center px-6 md:px-12 pt-32 pb-20 relative overflow-hidden z-10">
+      <section className="min-h-screen flex flex-col justify-center px-6 md:px-12 pt-24 md:pt-32 pb-16 md:pb-20 relative overflow-hidden z-10">
         <div className="max-w-[1400px]">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -151,7 +151,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="text-xl md:text-2xl text-white/50 max-w-[700px] leading-relaxed font-light mb-12"
+            className="text-xl md:text-2xl text-white/70 max-w-[700px] leading-relaxed font-light mb-12"
           >
             Smart marketing meets AI automation. We build the infrastructure that scales your revenue, automates your fulfillment, and organizes your chaos.
           </motion.p>
@@ -185,7 +185,7 @@ export default function Home() {
       </section>
 
       {/* CORE DISCIPLINES */}
-      <section className="py-32 border-t border-white/5">
+      <section className="py-20 md:py-32 border-t border-white/5">
         <div className="container mx-auto px-6">
           <FadeIn>
             <div className="mb-20">
@@ -231,7 +231,7 @@ export default function Home() {
       </section>
 
       {/* RECENT WORK */}
-      <section className="py-32 bg-[#080808]">
+      <section className="py-20 md:py-32 bg-[#080808]">
         <div className="container mx-auto px-6">
           <FadeIn>
             <div className="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
@@ -285,7 +285,7 @@ export default function Home() {
       </section>
 
       {/* TEAM SECTION */}
-      <section className="py-32 border-t border-white/5">
+      <section className="py-20 md:py-32 border-t border-white/5">
         <div className="container mx-auto px-6">
           <FadeIn>
             <div className="mb-16 text-center max-w-[600px] mx-auto">
@@ -324,7 +324,7 @@ export default function Home() {
       </section>
 
       {/* CONTACT / CALENDAR SECTION */}
-      <section id="contact" className="py-32 bg-[#080808]">
+      <section id="contact" className="py-20 md:py-32 bg-[#080808]">
         <div className="container mx-auto px-6">
           <FadeIn>
             <div className="mb-16 text-center max-w-[600px] mx-auto">

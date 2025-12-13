@@ -1,0 +1,12 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin/private paths (none currently)
+# Disallow: /admin
+
+# Sitemap location
+Sitemap: https://rsla.io/sitemap.xml
+
+# Crawl delay (optional, 1 second)
+Crawl-delay: 1

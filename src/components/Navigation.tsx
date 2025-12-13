@@ -43,7 +43,7 @@ export default function Navigation() {
                         alt="RSL/A"
                         width={350}
                         height={93}
-                        className="h-20 md:h-24 w-auto"
+                        className="h-16 md:h-20 lg:h-24 w-auto"
                         priority
                     />
                 </Link>

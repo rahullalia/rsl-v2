@@ -14,15 +14,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     },
     {
-      url: `${baseUrl}/services`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
       url: `${baseUrl}/work`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
       priority: 0.8,
     },
     {
@@ -32,24 +32,46 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/contact`,
+      url: `${baseUrl}/insider`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
-      priority: 0.7,
+      priority: 0.6,
     },
     {
-      url: `${baseUrl}/blog`,
+      url: `${baseUrl}/privacy-policy`,
       lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
+      changeFrequency: 'yearly' as const,
+      priority: 0.3,
     },
     {
-      url: `${baseUrl}/case-studies/casagrande-salon`,
+      url: `${baseUrl}/terms`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
+      changeFrequency: 'yearly' as const,
+      priority: 0.3,
     },
   ];
+
+  // Case study pages
+  const caseStudies = [
+    'casagrande-salon',
+    'market-research-automation',
+    'email-ice-breaker-automation',
+    'united-sikhs',
+    'rsl-blog-automation',
+    'proposal-generator-automation',
+    'lead-magnet-automation',
+    'linkedin-dms-automation',
+    'instantly-campaign-automation',
+    'upwork-scraper-automation',
+    'gmaps-scraper-automation',
+  ];
+
+  const caseStudyPages = caseStudies.map(slug => ({
+    url: `${baseUrl}/work/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  }));
 
   // Dynamic blog posts
   const blogSlugs = await client.fetch<string[]>(blogPostSlugsQuery);
@@ -60,5 +82,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...blogPages];
+  return [...staticPages, ...caseStudyPages, ...blogPages];
 }

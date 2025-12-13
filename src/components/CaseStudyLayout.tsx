@@ -52,7 +52,7 @@ export default function CaseStudyLayout({ tag, title, subtitle, stats, children 
             <Navigation />
 
             {/* Header */}
-            <section className="pt-32 pb-16 px-6 border-b border-white/10 relative overflow-hidden">
+            <section className="pt-24 md:pt-32 pb-12 md:pb-16 px-6 border-b border-white/10 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-blue/10 rounded-full blur-[100px] pointer-events-none" />
 
                 <div className="container mx-auto max-w-6xl">
@@ -112,11 +112,20 @@ export default function CaseStudyLayout({ tag, title, subtitle, stats, children 
             </section>
 
             {/* Two-column layout with sticky sidebar */}
-            <section className="py-16 px-6">
+            <section className="py-12 md:py-16 px-6">
                 <div className="container mx-auto max-w-6xl">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                        {/* Sticky Sidebar */}
-                        <aside className="lg:col-span-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+                        {/* Main Content - Shows first on mobile */}
+                        <div className="lg:col-span-8 lg:order-2">
+                            <FadeIn delay={0.3}>
+                                <div className="prose prose-invert prose-lg max-w-none prose-headings:font-display prose-headings:font-bold prose-img:rounded-xl prose-a:text-brand-blue prose-a:no-underline hover:prose-a:underline prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4 prose-p:text-gray-300 prose-p:leading-relaxed prose-li:text-gray-300 prose-strong:text-white">
+                                    {children}
+                                </div>
+                            </FadeIn>
+                        </div>
+
+                        {/* Sticky Sidebar - Shows after content on mobile */}
+                        <aside className="lg:col-span-4 lg:order-1">
                             <div className="lg:sticky lg:top-28">
                                 <FadeIn delay={0.2}>
                                     {/* Key Results */}
@@ -167,21 +176,12 @@ export default function CaseStudyLayout({ tag, title, subtitle, stats, children 
                                 </FadeIn>
                             </div>
                         </aside>
-
-                        {/* Main Content */}
-                        <div className="lg:col-span-8">
-                            <FadeIn delay={0.3}>
-                                <div className="prose prose-invert prose-lg max-w-none prose-headings:font-display prose-headings:font-bold prose-img:rounded-xl prose-a:text-brand-blue prose-a:no-underline hover:prose-a:underline prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4 prose-p:text-gray-300 prose-p:leading-relaxed prose-li:text-gray-300 prose-strong:text-white">
-                                    {children}
-                                </div>
-                            </FadeIn>
-                        </div>
                     </div>
                 </div>
             </section>
 
             {/* Footer CTA */}
-            <section className="py-20 border-t border-white/10">
+            <section className="py-16 md:py-20 border-t border-white/10">
                 <div className="container mx-auto px-6 text-center">
                     <FadeIn>
                         <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">Ready to achieve similar results?</h2>
