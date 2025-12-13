@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
@@ -66,8 +67,22 @@ export default function Footer() {
     };
 
     return (
-        <footer className="border-t border-white/10 pt-20 pb-10 px-[5%] bg-[#020202]">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-[1200px] mx-auto mb-12">
+        <footer className="border-t border-white/10 pt-20 pb-10 bg-[#020202]">
+            <div className="max-w-[1200px] mx-auto px-[5%]">
+                {/* Logo at top of footer */}
+                <div className="mb-20 -ml-6">
+                    <Link href="/" className="inline-block">
+                        <Image
+                            src="/lockup-transparent.png"
+                            alt="RSL/A"
+                            width={400}
+                            height={107}
+                            className="h-20 md:h-24 w-auto"
+                        />
+                    </Link>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12">
                 {/* Contact Section */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -139,16 +154,16 @@ export default function Footer() {
                         </a>
                     </div>
                 </motion.div>
-            </div>
+                </div>
 
-            {/* Newsletter Signup Section */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="max-w-[600px] mx-auto mb-12 pb-12 border-b border-white/5"
-            >
+                {/* Newsletter Signup Section */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="max-w-[600px] mx-auto mb-12 pb-12 border-b border-white/5"
+                >
                 <div className="text-center mb-6">
                     <h3 className="text-white text-[1.5rem] md:text-[1.8rem] font-semibold mb-2">
                         Get weekly automation tips
@@ -221,26 +236,27 @@ export default function Footer() {
                         Visit our insider page
                     </Link>
                 </p>
-            </motion.div>
+                </motion.div>
 
-            {/* Footer Bottom */}
-            <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-white/5 max-w-[1200px] mx-auto">
-                <div className="text-gray-500 text-sm">
-                    <span>© 2025 RSL/A</span>
-                </div>
-                <div className="flex gap-6 text-sm">
-                    <Link
-                        href="/privacy-policy"
-                        className="text-gray-500 hover:text-white transition-all duration-300"
-                    >
-                        Privacy Policy
-                    </Link>
-                    <Link
-                        href="/terms"
-                        className="text-gray-500 hover:text-white transition-all duration-300"
-                    >
-                        Terms & Conditions
-                    </Link>
+                {/* Footer Bottom */}
+                <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-white/5">
+                    <div className="text-gray-500 text-sm">
+                        <span>© 2025 RSL/A</span>
+                    </div>
+                    <div className="flex gap-6 text-sm">
+                        <Link
+                            href="/privacy-policy"
+                            className="text-gray-500 hover:text-white transition-all duration-300"
+                        >
+                            Privacy Policy
+                        </Link>
+                        <Link
+                            href="/terms"
+                            className="text-gray-500 hover:text-white transition-all duration-300"
+                        >
+                            Terms & Conditions
+                        </Link>
+                    </div>
                 </div>
             </div>
         </footer>

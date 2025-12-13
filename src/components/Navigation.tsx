@@ -39,11 +39,11 @@ export default function Navigation() {
                 {/* Logo */}
                 <Link href="/" className="z-50">
                     <Image
-                        src="/logomark.png"
+                        src="/lockup-transparent.png"
                         alt="RSL/A"
-                        width={40}
-                        height={40}
-                        className="w-10 h-10"
+                        width={350}
+                        height={93}
+                        className="h-20 md:h-24 w-auto"
                         priority
                     />
                 </Link>

@@ -11,11 +11,12 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://rsla.io'),
   icons: {
     icon: [
-      { url: '/logomark.png', sizes: '32x32', type: 'image/png' },
-      { url: '/logomark.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
     ],
-    apple: '/logomark.png',
-    shortcut: '/logomark.png',
+    apple: '/apple-touch-icon.png',
+    shortcut: '/favicon.svg',
   },
   openGraph: {
     title: 'RSL/A | Intelligent Marketing Systems',
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'RSL/A - Intelligent Marketing Systems',
+        alt: 'RSL/A - Marketing & AI Automation Agency',
       },
     ],
   },
@@ -42,6 +43,7 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
@@ -56,6 +58,10 @@ export default function RootLayout({
           href="https://api.fontshare.com/v2/css?f[]=satoshi@700,900&display=swap"
           rel="stylesheet"
         />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0070f3" />
+        <meta name="theme-color" content="#0a0a0a" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body className={`${inter.variable} bg-black text-white antialiased`}>
         {children}
