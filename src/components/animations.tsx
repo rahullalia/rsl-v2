@@ -295,15 +295,20 @@ export function HeroParallax({ children }: { children: React.ReactNode }) {
   const blob2Y = useTransform(scrollYProgress, [0, 1], [0, -300]);
   const blob3Y = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
-  // Floating particles
-  const particles = Array.from({ length: 30 }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: Math.random() * 3 + 1,
-    speed: Math.random() * 200 + 100,
-    opacity: Math.random() * 0.5 + 0.1,
-  }));
+  // Grid opacity
+  const gridOpacity = useTransform(scrollYProgress, [0, 0.3], [0.03, 0]);
+
+  // Static particles (generated once, no hooks in render)
+  const particles = [
+    { id: 0, x: 15, y: 20, size: 2, opacity: 0.3 },
+    { id: 1, x: 85, y: 15, size: 3, opacity: 0.4 },
+    { id: 2, x: 45, y: 70, size: 2, opacity: 0.25 },
+    { id: 3, x: 70, y: 40, size: 1.5, opacity: 0.35 },
+    { id: 4, x: 25, y: 55, size: 2.5, opacity: 0.3 },
+    { id: 5, x: 90, y: 65, size: 2, opacity: 0.4 },
+    { id: 6, x: 10, y: 80, size: 1.5, opacity: 0.25 },
+    { id: 7, x: 55, y: 25, size: 3, opacity: 0.35 },
+  ];
 
   return (
     <div ref={ref} className="relative">
@@ -327,12 +332,11 @@ export function HeroParallax({ children }: { children: React.ReactNode }) {
           className="absolute -bottom-32 right-1/4 w-[400px] h-[400px] rounded-full bg-[#7928ca]/10 blur-[60px]"
         />
 
-        {/* Floating particles */}
+        {/* Static floating particles (CSS animation only, no hooks) */}
         {particles.map((particle) => (
           <motion.div
             key={particle.id}
             style={{
-              y: useTransform(scrollYProgress, [0, 1], [0, -particle.speed]),
               width: particle.size,
               height: particle.size,
               left: `${particle.x}%`,
@@ -345,16 +349,17 @@ export function HeroParallax({ children }: { children: React.ReactNode }) {
               scale: [1, 1.2, 1],
             }}
             transition={{
-              duration: 3 + Math.random() * 2,
+              duration: 4,
               repeat: Infinity,
               ease: "easeInOut",
+              delay: particle.id * 0.5,
             }}
           />
         ))}
 
         {/* Grid lines that fade as you scroll */}
         <motion.div
-          style={{ opacity: useTransform(scrollYProgress, [0, 0.3], [0.03, 0]) }}
+          style={{ opacity: gridOpacity }}
           className="absolute inset-0"
         >
           <div className="absolute inset-0" style={{
