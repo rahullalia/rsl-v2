@@ -114,7 +114,7 @@ export default function Home() {
       <Navigation />
 
       {/* HERO SECTION */}
-      <section className="min-h-screen flex flex-col justify-center px-6 md:px-12 pt-24 md:pt-32 pb-16 md:pb-20 relative overflow-hidden z-10">
+      <section className="min-h-[75vh] flex flex-col justify-center px-6 md:px-12 pt-32 pb-16 relative overflow-hidden z-10">
         <div className="max-w-[1400px] mx-auto w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
