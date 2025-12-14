@@ -319,7 +319,7 @@ export default function Home() {
                   width: '100%',
                   border: 'none',
                   overflow: 'hidden',
-                  height: '820px'
+                  height: '950px'
                 }}
                 scrolling="no"
                 id="booking-calendar"
