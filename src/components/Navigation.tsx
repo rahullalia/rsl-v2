@@ -64,21 +64,37 @@ export default function Navigation() {
                         ))}
                     </div>
 
-                    {/* Desktop Right side */}
-                    <div className="hidden md:flex items-center bg-[#111] rounded-full p-1.5 border border-white/10">
+                    {/* Desktop Right side - Premium Buttons */}
+                    <div className="hidden md:flex items-center bg-[#111]/80 backdrop-blur-sm rounded-full p-1.5 border border-white/10 hover:border-white/20 transition-all duration-500">
+                        {/* Login Button - Subtle hover */}
                         <a
                             href="https://go.rsla.io"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="px-5 py-2.5 text-sm font-medium text-gray-400 hover:text-white transition-colors rounded-full"
+                            className="group relative px-5 py-2.5 text-sm font-medium text-gray-400 hover:text-white transition-all duration-300 rounded-full overflow-hidden"
                         >
-                            Login
+                            <span className="relative z-10">Login</span>
+                            <span className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-all duration-300 rounded-full" />
                         </a>
+
+                        {/* Start a Project - Animated gradient border */}
                         <Link
                             href="/#contact"
-                            className="px-5 py-2.5 border border-white/20 text-white text-sm font-medium rounded-full hover:bg-white/10 transition-all"
+                            className="group relative px-5 py-2.5 text-sm font-medium rounded-full overflow-hidden"
                         >
-                            Start a Project
+                            {/* Animated gradient border */}
+                            <span className="absolute inset-0 rounded-full bg-gradient-to-r from-brand-blue via-[#7928ca] to-brand-blue bg-[length:200%_100%] opacity-0 group-hover:opacity-100 transition-opacity duration-500 group-hover:animate-gradient-x" />
+
+                            {/* Inner background */}
+                            <span className="absolute inset-[1px] rounded-full bg-[#111] group-hover:bg-[#0a0a0a] transition-colors duration-300" />
+
+                            {/* Text with glow */}
+                            <span className="relative z-10 text-white group-hover:text-white transition-all duration-300">
+                                Start a Project
+                            </span>
+
+                            {/* Shimmer effect on hover */}
+                            <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
                         </Link>
                     </div>
 
