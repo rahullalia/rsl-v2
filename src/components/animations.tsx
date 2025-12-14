@@ -1,25 +1,33 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 /**
- * SIMPLIFIED ANIMATIONS - No mobile detection hooks
+ * ANIMATIONS WITH ClientOnly PATTERN
  *
- * Strategy: Use lightweight framer-motion animations that work on all devices.
- * Heavy animations (3D transforms, parallax, infinite loops) are simplified.
- * CSS handles the heavy lifting via prefers-reduced-motion and media queries.
+ * All components that use framer-motion wait until after hydration
+ * before rendering any animated content. This prevents hydration
+ * mismatches that cause crashes on iOS Safari with React 19 + Next.js 15+.
+ *
+ * Pattern: hasMounted state starts false, becomes true after useEffect.
+ * During SSR and initial hydration, render static fallback.
+ * After mount, render animated version.
  */
 
-// 1. 3D CARD TILT - Simplified, lighter effect
+// 1. 3D CARD TILT
 export function Card3D({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  const [hasMounted, setHasMounted] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Lighter spring config for better mobile performance
   const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [5, -5]), { stiffness: 200, damping: 30 });
   const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-5, 5]), { stiffness: 200, damping: 30 });
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!ref.current) return;
@@ -35,6 +43,11 @@ export function Card3D({ children, className = "" }: { children: React.ReactNode
     y.set(0);
   };
 
+  // Static fallback during SSR/hydration
+  if (!hasMounted) {
+    return <div className={`relative ${className}`}>{children}</div>;
+  }
+
   return (
     <motion.div
       ref={ref}
@@ -48,7 +61,7 @@ export function Card3D({ children, className = "" }: { children: React.ReactNode
   );
 }
 
-// 2. MAGNETIC BUTTON - Works on desktop, no-op on touch
+// 2. MAGNETIC BUTTON
 export function MagneticButton({
   children,
   className = "",
@@ -58,12 +71,17 @@ export function MagneticButton({
   className?: string;
   href?: string;
 }) {
+  const [hasMounted, setHasMounted] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
   const springX = useSpring(x, { stiffness: 300, damping: 20 });
   const springY = useSpring(y, { stiffness: 300, damping: 20 });
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!ref.current) return;
@@ -78,6 +96,15 @@ export function MagneticButton({
     x.set(0);
     y.set(0);
   };
+
+  // Static fallback during SSR/hydration
+  if (!hasMounted) {
+    const content = <div className={className}>{children}</div>;
+    if (href) {
+      return <a href={href}>{content}</a>;
+    }
+    return content;
+  }
 
   const content = (
     <motion.div
@@ -97,14 +124,19 @@ export function MagneticButton({
   return content;
 }
 
-// 3. TEXT SCRAMBLE - Simple hover effect
+// 3. TEXT SCRAMBLE - Simple hover effect (no motion needed)
 export function TextScramble({ text, className = "" }: { text: string; className?: string }) {
+  const [hasMounted, setHasMounted] = useState(false);
   const [displayText, setDisplayText] = useState(text);
   const [isScrambling, setIsScrambling] = useState(false);
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
   const scramble = () => {
-    if (isScrambling) return;
+    if (isScrambling || !hasMounted) return;
     setIsScrambling(true);
     let iteration = 0;
     const interval = setInterval(() => {
@@ -134,7 +166,7 @@ export function TextScramble({ text, className = "" }: { text: string; className
   );
 }
 
-// 4. NUMBER COUNTER - Intersection Observer based
+// 4. NUMBER COUNTER - Intersection Observer based (no framer-motion)
 export function NumberCounter({ value, suffix = "", prefix = "" }: { value: number; suffix?: string; prefix?: string }) {
   const [count, setCount] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -172,7 +204,7 @@ export function NumberCounter({ value, suffix = "", prefix = "" }: { value: numb
   );
 }
 
-// 5. PARALLAX BACKGROUND - Static background, no scroll hooks
+// 5. PARALLAX BACKGROUND - Pure CSS, no framer-motion
 export function ParallaxBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -182,7 +214,7 @@ export function ParallaxBackground() {
   );
 }
 
-// 6. PARALLAX DIVIDER - Simple static divider
+// 6. PARALLAX DIVIDER - Pure CSS, no framer-motion
 export function ParallaxDivider() {
   return (
     <div className="relative h-32 overflow-hidden">
@@ -192,7 +224,7 @@ export function ParallaxDivider() {
   );
 }
 
-// 7. HERO PARALLAX - Simplified with static background
+// 7. HERO PARALLAX - Pure CSS, no framer-motion
 export function HeroParallax({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative">
@@ -206,7 +238,7 @@ export function HeroParallax({ children }: { children: React.ReactNode }) {
   );
 }
 
-// 8. AURORA BACKGROUND - Simple gradient, no animation
+// 8. AURORA BACKGROUND - Pure CSS, no framer-motion
 export function AuroraBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -224,17 +256,17 @@ export function AuroraBackground() {
   );
 }
 
-// 9. LIQUID TEXT - Simplified hover effect
+// 9. LIQUID TEXT - Pure CSS, no framer-motion
 export function LiquidText({ text, className = "" }: { text: string; className?: string }) {
   return <span className={`inline-block ${className}`}>{text}</span>;
 }
 
-// 10. GLITCH TEXT - Simple text with CSS animation potential
+// 10. GLITCH TEXT - Pure CSS, no framer-motion
 export function GlitchText({ text, className = "" }: { text: string; className?: string }) {
   return <span className={`inline-block ${className}`}>{text}</span>;
 }
 
-// 11. INFINITE MARQUEE - CSS-based animation
+// 11. INFINITE MARQUEE - With ClientOnly pattern
 export function InfiniteMarquee({
   children,
   speed = 20,
@@ -244,6 +276,21 @@ export function InfiniteMarquee({
   speed?: number;
   direction?: "left" | "right"
 }) {
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  // Static fallback during SSR/hydration
+  if (!hasMounted) {
+    return (
+      <div className="overflow-hidden whitespace-nowrap">
+        <span className="inline-flex items-center">{children}</span>
+      </div>
+    );
+  }
+
   return (
     <div className="overflow-hidden whitespace-nowrap">
       <motion.div
@@ -258,16 +305,15 @@ export function InfiniteMarquee({
   );
 }
 
-// 12. SPOTLIGHT CARD - Simple hover glow
+// 12. SPOTLIGHT CARD - Pure CSS, no framer-motion
 export function SpotlightCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return <div className={`relative overflow-hidden ${className}`}>{children}</div>;
 }
 
-// Additional exports for compatibility
+// Additional exports for compatibility - all pure CSS/HTML
 
 export function ParallaxLayer({
   children,
-  speed = 0.5,
   className = ""
 }: {
   children: React.ReactNode;

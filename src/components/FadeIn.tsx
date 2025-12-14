@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useRef } from 'react';
+import { ReactNode, useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 
 interface FadeInProps {
@@ -14,8 +14,9 @@ interface FadeInProps {
 }
 
 /**
- * Simple FadeIn wrapper - uses framer-motion's built-in viewport detection
- * No custom hooks, no hydration issues
+ * FadeIn component with ClientOnly pattern to prevent hydration mismatches.
+ * On first render (SSR + hydration), renders a static div.
+ * After mount, renders the animated version.
  */
 export default function FadeIn({
   children,
@@ -26,8 +27,19 @@ export default function FadeIn({
   className = '',
   once = true,
 }: FadeInProps) {
+  const [hasMounted, setHasMounted] = useState(false);
   const ref = useRef(null);
   const isInView = useInView(ref, { once, margin: '-50px' });
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  // During SSR and initial hydration, render a static div
+  // This prevents hydration mismatch errors
+  if (!hasMounted) {
+    return <div className={className}>{children}</div>;
+  }
 
   return (
     <motion.div

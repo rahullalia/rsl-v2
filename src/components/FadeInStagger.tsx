@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useRef, Children, isValidElement, cloneElement, ReactElement, CSSProperties } from 'react';
+import { ReactNode, useRef, Children, isValidElement, cloneElement, ReactElement, CSSProperties, useState, useEffect } from 'react';
 import { motion, useInView, Variants } from 'framer-motion';
 
 interface FadeInStaggerProps {
@@ -12,8 +12,9 @@ interface FadeInStaggerProps {
 }
 
 /**
- * Simple staggered fade-in wrapper - uses framer-motion's built-in viewport detection
- * No custom hooks, no hydration issues
+ * FadeInStagger component with ClientOnly pattern to prevent hydration mismatches.
+ * On first render (SSR + hydration), renders a static div.
+ * After mount, renders the animated version with staggered children.
  */
 export default function FadeInStagger({
   children,
@@ -22,8 +23,19 @@ export default function FadeInStagger({
   once = true,
   style,
 }: FadeInStaggerProps) {
+  const [hasMounted, setHasMounted] = useState(false);
   const ref = useRef(null);
   const isInView = useInView(ref, { once, margin: '-50px' });
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  // During SSR and initial hydration, render a static div
+  // This prevents hydration mismatch errors
+  if (!hasMounted) {
+    return <div className={className} style={style}>{children}</div>;
+  }
 
   const containerVariants: Variants = {
     hidden: {},

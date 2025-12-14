@@ -21,11 +21,21 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Cpu, Globe, Rocket, Terminal } from "lucide-react";
-import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
+/**
+ * Homepage - Uses ClientOnly pattern throughout to prevent hydration mismatches
+ * that cause crashes on iOS Safari with React 19 + Next.js 15+.
+ *
+ * All animated elements wait until after hydration before rendering.
+ */
 export default function Home() {
+  const [hasMounted, setHasMounted] = useState(false);
   const cursorGlowRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   useEffect(() => {
     const glow = cursorGlowRef.current;
@@ -134,52 +144,27 @@ export default function Home() {
           <AuroraBackground />
 
           <div className="max-w-[1400px] mx-auto w-full relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-xs text-brand-blue font-medium mb-8"
-            >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-xs text-brand-blue font-medium mb-8">
               <span className="relative flex h-2 w-2">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse-slow"></span>
               </span>
               Accepting New Systems Clients for Q1 2026
-            </motion.div>
+            </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 60 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
-              className="hero-heading font-display font-bold mb-10"
-            >
+            <h1 className="hero-heading font-display font-bold mb-10">
               We build<br />
-              <motion.span
-                initial={{ opacity: 0, x: -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
-                className="text-gradient"
-              >
+              <span className="text-gradient">
                 <TextScramble text="intelligent" />
-              </motion.span>
+              </span>
               <br />
               marketing systems
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="text-xl md:text-2xl text-white/70 max-w-[700px] leading-relaxed font-light mb-12"
-            >
+            <p className="text-xl md:text-2xl text-white/70 max-w-[700px] leading-relaxed font-light mb-12">
               Smart marketing meets AI automation. We build the infrastructure that scales your revenue, automates your fulfillment, and organizes your chaos.
-            </motion.p>
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1 }}
-              className="flex flex-col sm:flex-row gap-4"
-            >
+            <div className="flex flex-col sm:flex-row gap-4">
               <MagneticButton
                 href="/#contact"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white text-black text-lg font-bold rounded-full hover:bg-brand-blue hover:text-white transition-all group"
@@ -193,7 +178,7 @@ export default function Home() {
               >
                 View Case Studies
               </MagneticButton>
-            </motion.div>
+            </div>
           </div>
 
           {/* Animated line */}
