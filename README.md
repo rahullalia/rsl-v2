@@ -35,6 +35,7 @@ Open [http://localhost:3000](http://localhost:3000) to view the site.
 src/
 ├── app/                    # Next.js App Router pages
 │   ├── page.tsx           # Homepage
+│   ├── sitemap.ts         # Dynamic sitemap (11 case studies + blog)
 │   ├── work/              # 11 case study pages
 │   ├── blog/              # Blog (Sanity-powered)
 │   ├── about/             # About page
@@ -51,6 +52,21 @@ src/
     └── lib/
         ├── client.ts      # Sanity client config
         └── image.ts       # Image URL builder
+
+public/
+├── images/                # Team photos, static assets
+├── lockup-transparent.png # Main logo (nav + footer)
+├── favicon.svg            # Vector favicon
+├── favicon-16x16.png      # Favicon fallback
+├── favicon-32x32.png      # Favicon fallback
+├── apple-touch-icon.png   # iOS home screen (180×180)
+├── safari-pinned-tab.svg  # Safari pinned tab
+├── icon-192.png           # PWA icon
+├── icon-512.png           # PWA icon
+├── og-image.png           # Social sharing (1200×630)
+├── manifest.json          # PWA metadata
+├── robots.txt             # Crawler directives
+└── llm.txt                # AI/LLM crawler information
 ```
 
 ## Sanity CMS
@@ -61,9 +77,29 @@ Blog content is managed via Sanity CMS.
 - **Dataset:** `production`
 - **API Version:** `2024-01-01`
 
+## SEO & Mobile Optimization
+
+**SEO Features:**
+- Dynamic sitemap with all pages (homepage, 11 case studies, blog posts)
+- robots.txt with crawl-delay and sitemap reference
+- llm.txt for AI/LLM crawler information
+- 17 targeted keywords in metadata
+- Comprehensive Open Graph and Twitter Card configuration
+- Structured favicon system (SVG + PNG fallbacks)
+
+**Mobile Optimization:**
+- Fully responsive design with mobile-first approach
+- Viewport meta tag configured for optimal mobile experience
+- Responsive logo sizing: h-16 (mobile) → h-20 (tablet) → h-24 (desktop)
+- Reduced padding on mobile for better content density
+- Content-first layout on mobile (case studies show content before stats)
+- WCAG-compliant color contrast ratios
+
 ## Deployment
 
 Auto-deploys to Vercel on push to `main` branch.
+
+**Domain:** rsla.io
 
 ## Logo Builder
 

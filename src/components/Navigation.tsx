@@ -39,7 +39,7 @@ export default function Navigation() {
                 {/* Logo */}
                 <Link href="/" className="z-50">
                     <Image
-                        src="/lockup-transparent.png"
+                        src="/lockup.png"
                         alt="RSL/A"
                         width={350}
                         height={93}

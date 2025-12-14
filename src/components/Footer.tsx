@@ -69,11 +69,11 @@ export default function Footer() {
     return (
         <footer className="border-t border-white/10 pt-20 pb-10 bg-[#020202]">
             <div className="max-w-[1200px] mx-auto px-[5%]">
-                {/* Logo at top of footer */}
+                {/* Logo */}
                 <div className="mb-16 md:mb-20 -ml-2 md:-ml-6">
                     <Link href="/" className="inline-block">
                         <Image
-                            src="/lockup-transparent.png"
+                            src="/lockup.png"
                             alt="RSL/A"
                             width={400}
                             height={107}
