@@ -1,7 +1,22 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { motion, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
+
+// Mobile detection hook - runs once on mount
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
+    };
+    checkMobile();
+    // Don't add resize listener to avoid re-renders
+  }, []);
+
+  return isMobile;
+}
 
 // 1. 3D CARD TILT COMPONENT
 export function Card3D({ children, className = "" }: { children: React.ReactNode; className?: string }) {
@@ -279,6 +294,26 @@ export function ParallaxDivider() {
 
 // 9. HERO PARALLAX - Multi-layer depth effect for hero sections
 export function HeroParallax({ children }: { children: React.ReactNode }) {
+  const isMobile = useIsMobile();
+
+  // On mobile, just render children with static background
+  if (isMobile) {
+    return (
+      <div className="relative">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-32 -right-32 w-[400px] h-[400px] rounded-full bg-[#0070f3]/15 blur-[80px]" />
+          <div className="absolute top-1/3 -left-24 w-[300px] h-[300px] rounded-full bg-[#00c6ff]/10 blur-[60px]" />
+        </div>
+        <div>{children}</div>
+      </div>
+    );
+  }
+
+  return <HeroParallaxDesktop>{children}</HeroParallaxDesktop>;
+}
+
+// Desktop-only version with all the animations
+function HeroParallaxDesktop({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -451,6 +486,26 @@ export function LiquidText({ text, className = "" }: { text: string; className?:
 
 // 12. AURORA BACKGROUND - Northern lights effect
 export function AuroraBackground() {
+  const isMobile = useIsMobile();
+
+  // Static version for mobile - no animations
+  if (isMobile) {
+    return (
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `
+              radial-gradient(ellipse at 20% 50%, rgba(0,112,243,0.12) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 20%, rgba(121,40,202,0.08) 0%, transparent 40%),
+              radial-gradient(ellipse at 40% 80%, rgba(0,198,255,0.08) 0%, transparent 40%)
+            `,
+          }}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       <motion.div
