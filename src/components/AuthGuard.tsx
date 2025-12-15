@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { auth } from '@/lib/firebase';
-import { onAuthStateChanged, User } from 'firebase/auth';
+import firebase from 'firebase/compat/app';
 
 const ALLOWED_DOMAIN = 'rsla.io';
 
@@ -12,13 +12,13 @@ interface AuthGuardProps {
 }
 
 export function AuthGuard({ children }: AuthGuardProps) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<firebase.User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user && user.email?.endsWith(`@${ALLOWED_DOMAIN}`)) {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user && user.email?.toLowerCase().endsWith(`@${ALLOWED_DOMAIN}`)) {
         setUser(user);
       } else {
         router.push('/admin/login');
@@ -45,12 +45,12 @@ export function AuthGuard({ children }: AuthGuardProps) {
 }
 
 export function useAuth() {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<firebase.User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user && user.email?.endsWith(`@${ALLOWED_DOMAIN}`)) {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user && user.email?.toLowerCase().endsWith(`@${ALLOWED_DOMAIN}`)) {
         setUser(user);
       } else {
         setUser(null);

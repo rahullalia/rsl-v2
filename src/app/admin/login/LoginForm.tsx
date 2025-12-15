@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { auth } from '@/lib/firebase';
-import { GoogleAuthProvider, signInWithRedirect, getRedirectResult, onAuthStateChanged } from 'firebase/auth';
+import { firebase, auth } from '@/lib/firebase';
 
 const ALLOWED_DOMAIN = 'rsla.io';
 
@@ -14,26 +13,8 @@ export default function LoginForm() {
   const router = useRouter();
 
   useEffect(() => {
-    // Check for redirect result first
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result?.user) {
-          const email = result.user.email;
-          if (!email || !email.endsWith(`@${ALLOWED_DOMAIN}`)) {
-            auth.signOut();
-            setError(`Access denied. Only @${ALLOWED_DOMAIN} accounts are allowed.`);
-          } else {
-            router.push('/admin');
-          }
-        }
-      })
-      .catch((err) => {
-        console.error('Redirect result error:', err);
-        setError('Authentication failed. Please try again.');
-      });
-
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user && user.email?.endsWith(`@${ALLOWED_DOMAIN}`)) {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user && user.email?.toLowerCase().endsWith(`@${ALLOWED_DOMAIN}`)) {
         router.push('/admin');
       }
       setChecking(false);
@@ -46,11 +27,32 @@ export default function LoginForm() {
     setLoading(true);
     setError('');
 
-    const provider = new GoogleAuthProvider();
+    const provider = new firebase.auth.GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
 
-    // Use redirect instead of popup (popup blocked by Vercel's COOP headers)
-    await signInWithRedirect(auth, provider);
+    try {
+      const result = await auth.signInWithPopup(provider);
+      const email = result.user?.email;
+
+      if (!email || !email.toLowerCase().endsWith(`@${ALLOWED_DOMAIN}`)) {
+        await auth.signOut();
+        setError(`Access denied. Only @${ALLOWED_DOMAIN} accounts are allowed.`);
+        setLoading(false);
+        return;
+      }
+
+      router.push('/admin');
+    } catch (err: unknown) {
+      const error = err as { code?: string; message?: string };
+      console.error('Sign-in error:', error);
+
+      if (error.code === 'auth/popup-closed-by-user') {
+        setError('Sign-in cancelled.');
+      } else {
+        setError(`Failed to sign in: ${error.message || 'Unknown error'}`);
+      }
+      setLoading(false);
+    }
   };
 
   if (checking) {

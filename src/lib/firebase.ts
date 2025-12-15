@@ -1,5 +1,6 @@
-import { initializeApp, getApps } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+// Using Firebase compat SDK to avoid COOP issues with popup auth
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyARwWcCWVzDRwvl_mgcv2zSfJwLxmVPthI",
@@ -12,7 +13,10 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase only if not already initialized
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-const auth = getAuth(app);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
-export { app, auth };
+const auth = firebase.auth();
+
+export { firebase, auth };
