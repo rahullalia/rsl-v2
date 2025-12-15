@@ -46,6 +46,7 @@ src/
 │   ├── Navigation.tsx     # Main navigation (Home/Work/Blog)
 │   ├── Footer.tsx         # Footer with newsletter signup
 │   ├── CaseStudyLayout.tsx # Case study template
+│   ├── animations.tsx     # 22 animation components (desktop-only with mobile fallbacks)
 │   ├── FadeIn.tsx         # Animation wrapper
 │   └── FadeInStagger.tsx  # Staggered animations
 └── sanity/
