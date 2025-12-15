@@ -41,6 +41,16 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        // Allow Firebase auth popup to work on admin pages
+        source: '/admin/:path*',
+        headers: [
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin-allow-popups',
+          },
+        ],
+      },
+      {
         source: '/llms.txt',
         headers: [
           {
