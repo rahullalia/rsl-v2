@@ -4,8 +4,14 @@ export async function POST(request: NextRequest) {
   try {
     const { password } = await request.json();
 
+    const envPassword = process.env.ADMIN_PASSWORD;
+    console.log('[Auth] Password length received:', password?.length);
+    console.log('[Auth] Env password exists:', !!envPassword);
+    console.log('[Auth] Env password length:', envPassword?.length);
+    console.log('[Auth] Match:', password === envPassword);
+
     // Check if password matches
-    if (password === process.env.ADMIN_PASSWORD) {
+    if (password === envPassword) {
       // Create response with auth cookie
       const response = NextResponse.json({ success: true });
 
