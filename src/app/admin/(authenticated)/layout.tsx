@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Admin | RSL/A',
@@ -7,11 +9,20 @@ export const metadata: Metadata = {
   robots: 'noindex, nofollow',
 };
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Check authentication
+  const cookieStore = await cookies();
+  const authCookie = cookieStore.get('admin-auth');
+  const isAuthenticated = authCookie?.value === process.env.ADMIN_PASSWORD;
+
+  if (!isAuthenticated) {
+    redirect('/admin/login');
+  }
+
   return (
     <div className="min-h-screen bg-brand-black">
       {/* Admin Header */}
