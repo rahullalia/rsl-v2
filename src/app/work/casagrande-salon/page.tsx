@@ -4,6 +4,9 @@ import CasagrandeContent from "./CasagrandeContent";
 export const metadata: Metadata = {
     title: "$600 in Meta Ads Drove $36K in Rental Income for Casagrande Salon | RSL/A",
     description: "Manhattan-based Casagrande Salon leveraged unused space and RSL/A's targeted advertising to generate $36,000 in passive annual revenue.",
+    alternates: {
+        canonical: "https://rsla.io/work/casagrande-salon",
+    },
     openGraph: {
         title: "$600 in Meta Ads Drove $36K in Rental Income for Casagrande Salon",
         description: "Manhattan-based Casagrande Salon leveraged unused space and RSL/A's targeted advertising to generate $36,000 in passive annual revenue.",
