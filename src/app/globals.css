@@ -134,18 +134,124 @@ h1, h2, h3, h4, h5, h6 {
   animation: gradient-x 3s ease infinite;
 }
 
+/* Lightbox animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* =================================================================
    CASE STUDY CONTENT STYLES
-   Used within prose content for special formatting boxes
+   Used within .case-study-content for prose-like formatting
    ================================================================= */
+
+/* Base content styles */
+.case-study-content {
+  color: #a1a1aa;
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.case-study-content p {
+  margin-bottom: 25px;
+}
+
+.case-study-content h2 {
+  font-size: 2.5rem;
+  color: #ffffff;
+  margin-top: 60px;
+  margin-bottom: 25px;
+  line-height: 1.2;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
+
+/* Remove top margin from first h2 */
+.case-study-content h2:first-child {
+  margin-top: 0;
+}
+
+.case-study-content h3 {
+  font-size: 1.5rem;
+  color: #0070f3;
+  margin-top: 45px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.case-study-content ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 25px;
+}
+
+.case-study-content li {
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 15px;
+}
+
+.case-study-content li::before {
+  content: '✓';
+  color: #0070f3;
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 1.2rem;
+  font-family: Arial, sans-serif;
+}
+
+.case-study-content strong {
+  color: #ffffff;
+}
+
+.case-study-content a {
+  color: #0070f3;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+}
+
+.case-study-content a:hover {
+  color: #3b9bff;
+  border-color: #3b9bff;
+}
+
+.case-study-content blockquote {
+  border-left: 4px solid rgba(255, 255, 255, 0.1);
+  padding-left: 25px;
+  margin: 40px 0;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px 20px 20px 25px;
+  border-radius: 0 16px 16px 0;
+}
 
 /* Proof Box - Client testimonials */
 .proof-box {
   background: #0d0d0d;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
-  padding: 30px;
-  margin: 40px 0;
+  padding: 40px;
+  margin: 50px 0;
 }
 
 .proof-box h3 {
@@ -167,8 +273,8 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid #0070f3;
   border-radius: 16px;
-  padding: 30px;
-  margin: 40px 0;
+  padding: 40px;
+  margin: 50px 0;
   text-align: center;
 }
 
@@ -195,7 +301,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 16px;
   padding: 50px;
   text-align: center;
-  margin-top: 60px;
+  margin-top: 70px;
 }
 
 .cta-section h2 {
@@ -204,6 +310,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 15px;
   border: none;
   padding: 0;
+  margin-top: 0;
 }
 
 .cta-section p {
@@ -232,4 +339,124 @@ h1, h2, h3, h4, h5, h6 {
   color: white;
   transform: translateY(-3px);
   box-shadow: 0 0 40px rgba(0, 112, 243, 0.7);
+}
+
+/* Mobile responsive for case study content */
+@media (max-width: 768px) {
+  .case-study-content h2 {
+    font-size: 2rem;
+    margin-top: 40px;
+  }
+
+  .case-study-content h3 {
+    font-size: 1.5rem;
+    margin-top: 30px;
+  }
+
+  .cta-section {
+    padding: 30px 20px;
+  }
+
+  .cta-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .key-takeaway-box,
+  .proof-box {
+    padding: 20px;
+  }
+}
+
+/* =================================================================
+   CASE STUDY MEDIA STYLES
+   Full-width images and videos within prose content
+   ================================================================= */
+
+/* Figure elements - full width with generous spacing */
+.prose figure {
+  margin: 3rem 0;
+  width: 100%;
+}
+
+.prose figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.prose figcaption {
+  margin-top: 1rem;
+  text-align: center;
+  color: #71717a;
+  font-size: 0.875rem;
+}
+
+/* Standalone images in prose */
+.prose > img,
+.prose > p > img {
+  width: 100%;
+  height: auto;
+  margin: 2rem 0;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Wistia video container - ensure full width and proper aspect ratio */
+.wistia-video-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 3rem 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.wistia-video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Generic video/iframe container for other embeds */
+.video-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 3rem 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Image with click-to-expand wrapper */
+.prose a[target="_blank"]:has(img) {
+  display: block;
+  margin: 3rem 0;
+}
+
+.prose a[target="_blank"] img {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  transition: opacity 0.2s ease;
+}
+
+.prose a[target="_blank"]:hover img {
+  opacity: 0.9;
 }

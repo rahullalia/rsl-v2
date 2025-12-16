@@ -216,7 +216,7 @@ export default function Home() {
               <Card3D key={index} className="h-full">
                 <Link
                   href={study.href}
-                  className="glass-card p-8 rounded-[20px] flex flex-col justify-between group hover:border-brand-blue hover:shadow-[0_10px_30px_rgba(0,112,243,0.15)] transition-all duration-300 h-full"
+                  className="glass-card p-8 rounded-[20px] flex flex-col justify-between group hover:border-brand-blue transition-all duration-300 h-full"
                 >
                   <div>
                     <span className="text-[0.8rem] text-brand-blue uppercase tracking-[1.5px] mb-4 block font-bold">

@@ -77,7 +77,7 @@ const caseStudies: CaseStudy[] = [
     title: "Automated Volunteer Onboarding, Saving $40K a Year",
     description: "Centralized volunteer and donor data for a humanitarian NGO, saving the cost of a full-time coordinator by implementing automated GHL workflows.",
     metrics: [
-      { value: "$40,000", label: "Annual Cost Saved" },
+      { value: "$40K", label: "Annual Cost Saved" },
       { value: "100%", label: "Database Unification" },
     ],
     featured: false,
@@ -175,7 +175,7 @@ const caseStudies: CaseStudy[] = [
     title: "Saved $18K a Year with Make.com and ChatGPT",
     description: "An internal case study proving that AI-powered automation can consistently publish high-quality, SEO-optimized content, eliminating massive copywriting costs.",
     metrics: [
-      { value: "$18,000", label: "Annual Cost Saved" },
+      { value: "$18K", label: "Annual Cost Saved" },
       { value: "4X", label: "Content Velocity" },
     ],
     featured: false,
@@ -302,7 +302,7 @@ export default function WorkPage() {
                 <SpotlightCard className="h-full">
                   <Link
                     href={`/work/${study.slug}`}
-                    className="group flex flex-col justify-between rounded-[20px] overflow-hidden border border-white/10 bg-white/5 p-8 transition-all duration-300 hover:border-brand-blue hover:shadow-[0_10px_30px_rgba(0,112,243,0.15)] h-full"
+                    className="group flex flex-col justify-between rounded-[20px] overflow-hidden border border-white/10 bg-white/5 p-8 transition-all duration-300 hover:border-brand-blue h-full"
                   >
                     {/* Content */}
                     <div>

@@ -28,29 +28,9 @@ function useIsMobile() {
   return isMobile;
 }
 
-// 1. Card3D - 3D tilt effect on hover (desktop only)
+// 1. Card3D - Lift and highlight effect on hover (desktop only)
 export function Card3D({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const isMobile = useIsMobile();
-  const ref = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [10, -10]), { stiffness: 300, damping: 30 });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-10, 10]), { stiffness: 300, damping: 30 });
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!ref.current || isMobile) return;
-    const rect = ref.current.getBoundingClientRect();
-    const xPos = (e.clientX - rect.left) / rect.width - 0.5;
-    const yPos = (e.clientY - rect.top) / rect.height - 0.5;
-    x.set(xPos);
-    y.set(yPos);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
 
   if (isMobile) {
     return <div className={`relative ${className}`}>{children}</div>;
@@ -58,11 +38,9 @@ export function Card3D({ children, className = "" }: { children: React.ReactNode
 
   return (
     <motion.div
-      ref={ref}
       className={`relative ${className}`}
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      whileHover={{ scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 300, damping: 25 }}
     >
       {children}
     </motion.div>
@@ -157,11 +135,19 @@ export function TextScramble({ text, className = "" }: { text: string; className
 }
 
 // 4. NumberCounter - Animated counter that triggers when scrolled into view (desktop only)
-export function NumberCounter({ value, suffix = "", prefix = "" }: { value: number; suffix?: string; prefix?: string }) {
+export function NumberCounter({ value, suffix = "", prefix = "", formatWithCommas = false }: { value: number; suffix?: string; prefix?: string; formatWithCommas?: boolean }) {
   const isMobile = useIsMobile();
   const [count, setCount] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
+
+  // Format number with commas (e.g., 40000 -> "40,000")
+  const formatNumber = (num: number) => {
+    if (formatWithCommas) {
+      return num.toLocaleString('en-US');
+    }
+    return num.toString();
+  };
 
   useEffect(() => {
     if (isMobile) {
@@ -205,7 +191,7 @@ export function NumberCounter({ value, suffix = "", prefix = "" }: { value: numb
 
   return (
     <span ref={ref} className="tabular-nums">
-      {prefix}{count}{suffix}
+      {prefix}{formatNumber(count)}{suffix}
     </span>
   );
 }
@@ -435,7 +421,7 @@ export function SpotlightCard({ children, className = "" }: { children: React.Re
       onMouseLeave={() => setOpacity(0)}
     >
       <div
-        className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300"
+        className="pointer-events-none absolute inset-0 rounded-[20px] opacity-0 transition-opacity duration-300"
         style={{
           opacity,
           background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(0,112,243,0.15), transparent 40%)`,
