@@ -9,7 +9,7 @@ export default function RahulContactPage() {
     title: 'Founder & CEO, RSL/A',
     phone: '+1 646-641-3173',
     email: 'lalia@rsla.io',
-    website: 'https://www.rsla.io',
+    website: 'https://rsla.io',
     linkedin: 'https://www.linkedin.com/in/rahullalia/',
     instagram: 'https://www.instagram.com/rahul.lalia/',
     tiktok: 'https://www.tiktok.com/@rahul_lalia',

@@ -9,7 +9,7 @@ export default function SidContent() {
     title: 'Co-Founder & CTO, RSL/A',
     phone: '+91 93562 52711',
     email: 'rodrigues@rsla.io',
-    website: 'https://www.rsla.io',
+    website: 'https://rsla.io',
     linkedin: 'https://www.linkedin.com/in/dorddis/',
     photo: '/images/siddharth.png',
     vcardUrl: '/contacts/siddharth-rodrigues.vcf',
