@@ -110,7 +110,7 @@ export default function BlogPostContent({ post, recentPosts }: BlogPostContentPr
             )}
           </article>
 
-          <aside className="hidden lg:block">
+          <aside className="hidden lg:block sticky top-32 self-start">
             <TableOfContents content={post.body} recentPosts={recentPosts} currentPostId={post._id} />
           </aside>
         </div>
