@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
     { name: "Home", href: "/", number: "01" },
@@ -12,12 +13,20 @@ const navLinks = [
 export default function Navigation() {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [scrollProgress, setScrollProgress] = useState(0);
+    const pathname = usePathname();
 
     useEffect(() => {
         const handleScroll = () => {
             setScrolled(window.scrollY > 20);
+
+            // Calculate scroll progress
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+            setScrollProgress(scrolled);
         };
-        window.addEventListener("scroll", handleScroll);
+        window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
@@ -32,34 +41,55 @@ export default function Navigation() {
         };
     }, [isOpen]);
 
+    // Check if link is active
+    const isActive = (href: string) => {
+        if (href === '/') return pathname === '/';
+        return pathname.startsWith(href);
+    };
+
     return (
         <>
             <nav
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
                     scrolled || isOpen
-                        ? "bg-brand-black/95 backdrop-blur-xl border-white/10 py-4"
-                        : "bg-transparent border-transparent py-6"
+                        ? "bg-[#0a0a0a]/80 backdrop-blur-2xl shadow-[0_1px_0_0_rgba(255,255,255,0.05),0_4px_30px_rgba(0,0,0,0.3)] py-3"
+                        : "bg-transparent py-5"
                 }`}
             >
+                {/* Scroll Progress Indicator */}
+                <div
+                    className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-brand-blue via-[#7928ca] to-brand-blue transition-all duration-150 ease-out"
+                    style={{ width: `${scrollProgress}%` }}
+                />
+
                 <div className="container mx-auto px-6 flex items-center justify-between">
-                    <Link href="/" className="z-50 relative" onClick={() => setIsOpen(false)}>
+                    <Link href="/" className="z-50 relative group" onClick={() => setIsOpen(false)}>
                         <img
                             src="/lockup.png"
                             alt="RSL/A"
-                            className="h-14 sm:h-16 md:h-16 lg:h-20 w-auto transition-all duration-300"
+                            className="h-[4.5rem] sm:h-20 md:h-20 lg:h-24 w-auto transition-all duration-300 group-hover:opacity-90"
                         />
                     </Link>
 
                     {/* Desktop Menu - Center */}
-                    <div className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+                    <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2 bg-white/[0.03] backdrop-blur-sm rounded-full px-2 py-1.5 border border-white/[0.05]">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className="text-sm font-medium text-gray-400 hover:text-white transition-colors relative group"
+                                className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full group ${
+                                    isActive(link.href)
+                                        ? "text-white"
+                                        : "text-gray-400 hover:text-white"
+                                }`}
                             >
-                                {link.name}
-                                <span className="absolute -bottom-1 left-0 w-0 h-px bg-brand-blue transition-all duration-300 group-hover:w-full" />
+                                {/* Active background pill */}
+                                {isActive(link.href) && (
+                                    <span className="absolute inset-0 bg-white/10 rounded-full" />
+                                )}
+                                {/* Hover background */}
+                                <span className="absolute inset-0 bg-white/0 group-hover:bg-white/5 rounded-full transition-colors duration-300" />
+                                <span className="relative">{link.name}</span>
                             </Link>
                         ))}
                     </div>
@@ -209,22 +239,34 @@ export default function Navigation() {
                                 style={{ transitionDelay: isOpen ? `${200 + index * 100}ms` : "0ms" }}
                             >
                                 {/* Number */}
-                                <span className="text-xs font-mono text-brand-blue/60 tabular-nums">
+                                <span className={`text-xs font-mono tabular-nums transition-colors duration-300 ${
+                                    isActive(link.href) ? "text-brand-blue" : "text-brand-blue/40"
+                                }`}>
                                     {link.number}
                                 </span>
 
                                 {/* Link text with hover line */}
                                 <span className="relative">
-                                    <span className="block text-[3.5rem] sm:text-[4.5rem] font-display font-bold text-white leading-none tracking-tight transition-all duration-300 group-hover:text-brand-blue">
+                                    <span className={`block text-[3rem] sm:text-[4rem] font-display font-bold leading-none tracking-tight transition-all duration-300 ${
+                                        isActive(link.href)
+                                            ? "text-brand-blue"
+                                            : "text-white group-hover:text-brand-blue"
+                                    }`}>
                                         {link.name}
                                     </span>
-                                    {/* Underline that slides in on hover */}
-                                    <span className="absolute -bottom-1 left-0 h-[3px] bg-brand-blue rounded-full transition-all duration-500 ease-out w-0 group-hover:w-full" />
+                                    {/* Active/hover underline */}
+                                    <span className={`absolute -bottom-1 left-0 h-[3px] bg-brand-blue rounded-full transition-all duration-500 ease-out ${
+                                        isActive(link.href) ? "w-full" : "w-0 group-hover:w-full"
+                                    }`} />
                                 </span>
 
-                                {/* Arrow that appears on hover */}
+                                {/* Arrow that appears on hover or active */}
                                 <svg
-                                    className="w-8 h-8 text-brand-blue opacity-0 -translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0"
+                                    className={`w-7 h-7 text-brand-blue transition-all duration-300 ${
+                                        isActive(link.href)
+                                            ? "opacity-100 translate-x-0"
+                                            : "opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0"
+                                    }`}
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
