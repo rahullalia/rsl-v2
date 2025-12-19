@@ -41,7 +41,7 @@ interface BlogPostContentProps {
 
 export default function BlogPostContent({ post, recentPosts }: BlogPostContentProps) {
   return (
-    <main className="min-h-screen bg-brand-black text-white relative overflow-hidden">
+    <main className="min-h-screen bg-brand-black text-white relative overflow-x-hidden">
       <Navigation />
       <AuroraBackground />
 

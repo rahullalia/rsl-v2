@@ -58,8 +58,11 @@ export default function Navigation() {
             >
                 {/* Scroll Progress Indicator */}
                 <div
-                    className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-brand-blue via-[#7928ca] to-brand-blue transition-all duration-150 ease-out"
-                    style={{ width: `${scrollProgress}%` }}
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-brand-blue via-[#7928ca] to-brand-blue will-change-transform origin-left"
+                    style={{
+                        transform: `scaleX(${scrollProgress / 100})`,
+                        transition: 'transform 50ms linear'
+                    }}
                 />
 
                 <div className="container mx-auto px-6 flex items-center justify-between">
