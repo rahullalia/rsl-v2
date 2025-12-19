@@ -123,7 +123,7 @@ export default function TableOfContents({ content, recentPosts = [], currentPost
   }
 
   return (
-    <nav className="sticky top-24">
+    <nav>
       <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
         <h3 className="text-xs text-brand-blue font-bold uppercase tracking-widest mb-6">
           Table of Contents
