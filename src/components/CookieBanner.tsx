@@ -95,45 +95,35 @@ export default function CookieBanner() {
                 </div>
             </div>
 
-            {/* Mobile Popup Modal */}
+            {/* Mobile Slide-in Banner */}
             <div
-                className={`md:hidden fixed inset-0 z-[100] flex items-center justify-center p-4 transition-all duration-500 ease-out ${
+                className={`md:hidden fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ease-out ${
                     isClosing
-                        ? "opacity-0"
-                        : "opacity-100"
+                        ? "opacity-0 -translate-y-full"
+                        : "opacity-100 translate-y-0"
                 }`}
             >
-                {/* Backdrop */}
-                <div className="absolute inset-0 bg-black/60 backdrop-blur-md" />
-
-                {/* Modal */}
-                <div
-                    className={`relative w-full max-w-[280px] bg-[#161616] rounded-2xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] overflow-hidden transition-all duration-500 ${
-                        isClosing
-                            ? "scale-95 opacity-0 translate-y-4"
-                            : "scale-100 opacity-100 translate-y-0"
-                    }`}
-                >
+                <div className="bg-[#161616] border-b border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
                     {/* Gradient accent line */}
-                    <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-brand-blue via-[#7928ca] to-brand-blue" />
+                    <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-brand-blue via-[#7928ca] to-brand-blue" />
 
-                    <div className="px-5 py-5 text-center">
-                        <p className="text-gray-300 text-sm mb-4">
+                    <div className="px-4 py-4">
+                        <p className="text-gray-300 text-sm mb-3 text-center">
                             We use cookies to improve your experience.
                         </p>
 
-                        <div className="flex flex-col gap-2">
-                            <button
-                                onClick={handleAccept}
-                                className="w-full px-4 py-2.5 text-sm font-medium text-white rounded-lg bg-brand-blue active:bg-brand-blue/80 transition-all"
-                            >
-                                Accept All
-                            </button>
+                        <div className="flex gap-2">
                             <button
                                 onClick={handleDecline}
-                                className="w-full px-4 py-2.5 text-sm font-medium text-gray-400 rounded-lg border border-white/10 active:bg-white/5 transition-all"
+                                className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-400 rounded-lg border border-white/10 active:bg-white/5 transition-all"
                             >
                                 Only Necessary
+                            </button>
+                            <button
+                                onClick={handleAccept}
+                                className="flex-1 px-4 py-2.5 text-sm font-medium text-white rounded-lg bg-brand-blue active:bg-brand-blue/80 transition-all"
+                            >
+                                Accept All
                             </button>
                         </div>
                     </div>
