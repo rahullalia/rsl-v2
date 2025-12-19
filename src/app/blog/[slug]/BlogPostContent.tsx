@@ -6,6 +6,7 @@ import { PortableTextComponents } from '@/components/blog/PortableTextComponents
 import TableOfContents from '@/components/blog/TableOfContents';
 import ShareButton from '@/components/blog/ShareButton';
 import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 import { AuroraBackground } from '@/components/animations';
 
 interface BlogPost {
@@ -41,9 +42,13 @@ interface BlogPostContentProps {
 
 export default function BlogPostContent({ post, recentPosts }: BlogPostContentProps) {
   return (
-    <main className="min-h-screen bg-brand-black text-white relative overflow-x-hidden">
+    <main className="min-h-screen bg-brand-black text-white relative">
       <Navigation />
-      <AuroraBackground />
+
+      {/* Aurora in fixed container to not break sticky */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <AuroraBackground />
+      </div>
 
       <div className="max-w-7xl mx-auto py-24 md:py-32 px-6 md:px-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12 items-start">
@@ -111,15 +116,7 @@ export default function BlogPostContent({ post, recentPosts }: BlogPostContentPr
         </div>
       </div>
 
-      <footer className="border-t border-white/5 py-12 px-6 relative z-10">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-white/40 text-sm">© {new Date().getFullYear()} RSL/A. All rights reserved.</div>
-          <div className="flex gap-6 text-sm">
-            <Link href="/privacy-policy" className="text-white/40 hover:text-brand-blue transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="text-white/40 hover:text-brand-blue transition-colors">Terms & Conditions</Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }

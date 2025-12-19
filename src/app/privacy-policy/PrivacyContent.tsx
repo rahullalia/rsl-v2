@@ -1,7 +1,7 @@
 'use client';
 
-import Link from 'next/link';
 import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 import { AuroraBackground } from '@/components/animations';
 
 export default function PrivacyContent() {
@@ -107,22 +107,7 @@ export default function PrivacyContent() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="border-t border-white/5 py-12 px-6 relative z-10">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-white/40 text-sm">
-            © {new Date().getFullYear()} RSL/A. All rights reserved.
-          </div>
-          <div className="flex gap-6 text-sm">
-            <Link href="/privacy-policy" className="text-white/40 hover:text-brand-blue transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="/terms" className="text-white/40 hover:text-brand-blue transition-colors">
-              Terms & Conditions
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
