@@ -111,9 +111,7 @@ export default function BlogPostContent({ post, recentPosts }: BlogPostContentPr
           </article>
 
           <aside className="hidden lg:block">
-            <div className="sticky top-24">
-              <TableOfContents content={post.body} recentPosts={recentPosts} currentPostId={post._id} />
-            </div>
+            <TableOfContents content={post.body} recentPosts={recentPosts} currentPostId={post._id} />
           </aside>
         </div>
       </div>
