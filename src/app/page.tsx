@@ -319,12 +319,11 @@ export default function Home() {
                   width: '100%',
                   border: 'none',
                   overflow: 'hidden',
-                  height: '1100px'
                 }}
                 scrolling="no"
                 id="booking-calendar"
                 title="Booking Calendar"
-                className="rounded-2xl"
+                className="rounded-2xl h-[700px] md:h-[1100px]"
               />
             </div>
           </FadeIn>
