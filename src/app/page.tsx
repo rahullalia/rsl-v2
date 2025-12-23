@@ -259,8 +259,8 @@ export default function Home() {
       {/* Parallax Divider */}
       <ParallaxDivider />
 
-      {/* TEAM SECTION */}
-      <section className="py-20 md:py-32 border-t border-white/5 relative">
+      {/* TEAM SECTION - hidden on mobile */}
+      <section className="hidden md:block py-20 md:py-32 border-t border-white/5 relative">
         <ParallaxBackground />
         <div className="container mx-auto px-6">
           <FadeIn>
