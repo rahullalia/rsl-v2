@@ -37,7 +37,7 @@ export default function ThankYouContent() {
       <header className="relative z-10 px-6 md:px-12 py-6">
         <Link href="/" className="inline-block">
           <img
-            src="/lockup-transparent.png"
+            src="/lockup.png"
             alt="RSL/A"
             className="h-12 md:h-16 w-auto"
           />
