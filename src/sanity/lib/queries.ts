@@ -1,8 +1,9 @@
 import { groq } from 'next-sanity';
 
 // Get all blog posts (with pagination support)
+// Only shows posts with publishedAt set (drafts have no publishedAt)
 export const blogPostsQuery = groq`
-  *[_type == "blogPost"] | order(publishedAt desc) [$start...$end] {
+  *[_type == "blogPost" && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc) [$start...$end] {
     _id,
     title,
     slug,
@@ -60,18 +61,19 @@ export const blogPostBySlugQuery = groq`
 `;
 
 // Get all blog post slugs (for static generation)
+// Only published posts get static pages
 export const blogPostSlugsQuery = groq`
-  *[_type == "blogPost" && defined(slug.current)][].slug.current
+  *[_type == "blogPost" && defined(slug.current) && defined(publishedAt) && publishedAt <= now()][].slug.current
 `;
 
-// Get total count of blog posts
+// Get total count of published blog posts
 export const blogPostsCountQuery = groq`
-  count(*[_type == "blogPost"])
+  count(*[_type == "blogPost" && defined(publishedAt) && publishedAt <= now()])
 `;
 
 // Get recent blog posts (for sidebar or related posts)
 export const recentBlogPostsQuery = groq`
-  *[_type == "blogPost"] | order(publishedAt desc) [0...5] {
+  *[_type == "blogPost" && defined(publishedAt) && publishedAt <= now()] | order(publishedAt desc) [0...5] {
     _id,
     title,
     slug,
