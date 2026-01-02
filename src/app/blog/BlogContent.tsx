@@ -79,6 +79,7 @@ export default function BlogContent({ posts, currentPage, totalPages }: BlogCont
                               <img
                                 src={urlForImage(post.featuredImage.asset)?.width(600).height(340).url() || ''}
                                 alt={post.featuredImage.alt || post.title}
+                                loading="lazy"
                                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                               />
                             </div>

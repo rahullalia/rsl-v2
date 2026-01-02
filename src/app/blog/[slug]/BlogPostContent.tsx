@@ -85,7 +85,7 @@ export default function BlogPostContent({ post, recentPosts }: BlogPostContentPr
 
             {post.featuredImage?.url && (
               <div className="my-12 rounded-2xl overflow-hidden">
-                <img src={post.featuredImage.url} alt={post.featuredImage.alt} className="w-full h-auto" />
+                <img src={post.featuredImage.url} alt={post.featuredImage.alt} loading="lazy" className="w-full h-auto" />
               </div>
             )}
 
@@ -98,7 +98,7 @@ export default function BlogPostContent({ post, recentPosts }: BlogPostContentPr
                 <h3 className="text-xl text-white mb-4">About the Author</h3>
                 <div className="flex items-start gap-5">
                   {post.author.image?.url && (
-                    <img src={post.author.image.url} alt={post.author.image.alt} className="rounded-full shrink-0" />
+                    <img src={post.author.image.url} alt={post.author.image.alt} loading="lazy" className="rounded-full shrink-0" />
                   )}
                   <div>
                     <p className="text-lg text-white font-semibold mb-1">{post.author.name}</p>

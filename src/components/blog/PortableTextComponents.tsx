@@ -24,6 +24,7 @@ export const PortableTextComponents: PortableTextComponentsType = {
           <img
             src={urlForImage(value.asset)?.width(1200).fit('max').url() || ''}
             alt={value.alt || 'Blog image'}
+            loading="lazy"
             className="rounded-xl w-full h-auto"
           />
           {value.caption && (

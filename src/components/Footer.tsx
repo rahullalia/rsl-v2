@@ -12,6 +12,7 @@ export default function Footer() {
                         <img
                             src="/lockup.png"
                             alt="RSL/A"
+                            loading="lazy"
                             className="h-14 w-auto opacity-60 group-hover:opacity-80 transition-opacity duration-300"
                         />
                     </Link>
@@ -20,6 +21,7 @@ export default function Footer() {
                         <img
                             src="/images/designrush-badge.png"
                             alt="DesignRush"
+                            loading="lazy"
                             className="h-12 w-auto"
                         />
                     </div>
@@ -48,6 +50,7 @@ export default function Footer() {
                         <img
                             src="/lockup.png"
                             alt="RSL/A"
+                            loading="lazy"
                             className="h-12 w-auto opacity-60 group-hover:opacity-80 transition-opacity duration-300"
                         />
                     </Link>
@@ -72,6 +75,7 @@ export default function Footer() {
                         <img
                             src="/images/designrush-badge.png"
                             alt="DesignRush"
+                            loading="lazy"
                             className="h-10 w-auto"
                         />
                     </div>

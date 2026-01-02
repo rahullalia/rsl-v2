@@ -294,6 +294,7 @@ export default function Home() {
                   <img
                     src={member.image}
                     alt={`${member.name}, ${member.title} of RSL/A`}
+                    loading="lazy"
                     className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
                   />
                 </div>
