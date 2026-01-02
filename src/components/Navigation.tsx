@@ -26,6 +26,10 @@ export default function Navigation() {
             const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
             setScrollProgress(scrolled);
         };
+
+        // Check initial scroll position on mount (handles browser restore)
+        handleScroll();
+
         window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
@@ -53,7 +57,7 @@ export default function Navigation() {
                 className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
                     scrolled || isOpen
                         ? "bg-[#0a0a0a]/80 backdrop-blur-2xl shadow-[0_1px_0_0_rgba(255,255,255,0.05),0_4px_30px_rgba(0,0,0,0.3)] py-3"
-                        : "bg-transparent py-5"
+                        : "bg-brand-black/40 md:bg-transparent backdrop-blur-md md:backdrop-blur-none py-5"
                 }`}
             >
                 {/* Scroll Progress Indicator */}

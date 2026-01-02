@@ -84,8 +84,8 @@ export default function BlogPostContent({ post, recentPosts }: BlogPostContentPr
             </div>
 
             {post.featuredImage?.url && (
-              <div className="relative aspect-video my-12 rounded-2xl overflow-hidden">
-                <img src={post.featuredImage.url} alt={post.featuredImage.alt} className="absolute inset-0 w-full h-full object-cover" />
+              <div className="my-12 rounded-2xl overflow-hidden">
+                <img src={post.featuredImage.url} alt={post.featuredImage.alt} className="w-full h-auto" />
               </div>
             )}
 

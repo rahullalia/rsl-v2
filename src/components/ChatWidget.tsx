@@ -18,16 +18,17 @@ export default function ChatWidget() {
     // Check immediately
     checkConsent();
 
-    // Listen for storage changes (in case consent is given)
+    // Listen for storage changes (cross-tab)
     const handleStorage = () => checkConsent();
     window.addEventListener('storage', handleStorage);
 
-    // Also poll briefly in case consent is set in same tab
-    const interval = setInterval(checkConsent, 500);
+    // Listen for custom event (same-tab consent)
+    const handleConsentChange = () => checkConsent();
+    window.addEventListener('cookie-consent-changed', handleConsentChange);
 
     return () => {
       window.removeEventListener('storage', handleStorage);
-      clearInterval(interval);
+      window.removeEventListener('cookie-consent-changed', handleConsentChange);
     };
   }, []);
 

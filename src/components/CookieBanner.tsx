@@ -20,6 +20,7 @@ export default function CookieBanner() {
         setIsClosing(true);
         setTimeout(() => {
             localStorage.setItem("cookie-consent", "accepted");
+            window.dispatchEvent(new CustomEvent("cookie-consent-changed"));
             setIsVisible(false);
         }, 300);
     };
@@ -28,6 +29,7 @@ export default function CookieBanner() {
         setIsClosing(true);
         setTimeout(() => {
             localStorage.setItem("cookie-consent", "declined");
+            window.dispatchEvent(new CustomEvent("cookie-consent-changed"));
             setIsVisible(false);
         }, 300);
     };

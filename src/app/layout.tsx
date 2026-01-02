@@ -246,6 +246,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           }}
         />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
+        {/* Preconnect to Fontshare for faster font loading */}
+        <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://api.fontshare.com" />
         <link
           href="https://api.fontshare.com/v2/css?f[]=satoshi@700,900&display=swap"
           rel="stylesheet"

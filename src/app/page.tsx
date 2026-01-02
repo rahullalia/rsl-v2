@@ -92,7 +92,7 @@ export default function Home() {
               <span className="relative flex h-2 w-2">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse-slow"></span>
               </span>
-              Accepting New Systems Clients for Q1 2026
+              Accepting New Clients
             </div>
 
             <h1 className="hero-heading font-display font-bold mb-10">

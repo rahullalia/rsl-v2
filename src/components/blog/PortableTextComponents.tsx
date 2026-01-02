@@ -22,9 +22,9 @@ export const PortableTextComponents: PortableTextComponentsType = {
       return (
         <figure className="my-8">
           <img
-            src={urlForImage(value.asset)?.width(1200).height(675).url() || ''}
+            src={urlForImage(value.asset)?.width(1200).fit('max').url() || ''}
             alt={value.alt || 'Blog image'}
-            className="rounded-xl w-full"
+            className="rounded-xl w-full h-auto"
           />
           {value.caption && (
             <figcaption className="text-center text-sm text-white/50 mt-3 italic">
